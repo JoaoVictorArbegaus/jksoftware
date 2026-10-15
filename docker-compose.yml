@@ -1,0 +1,10 @@
+# Sobe a landing da JK Software: docker compose up -d --build
+# Abre em http://localhost:8080 (outra porta: PORTA=3000 docker compose up -d --build)
+name: jk-software
+services:
+  site:
+    build: .
+    image: jk-software-landing:latest
+    ports:
+      - "${PORTA:-8080}:80"
+    restart: unless-stopped

@@ -14,7 +14,25 @@ Landing da JK Software (sistemas sob medida, sites e automações), pré-renderi
 
 Versões fixas em `package.json`. Não troque nem acrescente biblioteca de base sem registrar a decisão aqui.
 
-## Como rodar
+## Subir com Docker (sem instalar Node)
+
+Precisa só do [Docker](https://www.docker.com/products/docker-desktop/) aberto.
+
+```bash
+git clone https://github.com/JoaoVictorArbegaus/jksoftware.git
+cd jksoftware
+docker compose up -d --build
+```
+
+Abre em http://localhost:8080. A primeira vez demora uns minutos (instala as dependências e faz o build dentro do contêiner); depois é rápido.
+
+- Outra porta, se a 8080 estiver ocupada: `PORTA=3000 docker compose up -d --build` (no PowerShell: `$env:PORTA=3000; docker compose up -d --build`).
+- Atualizar depois de um `git pull`: `docker compose up -d --build`.
+- Parar: `docker compose down`.
+
+O contêiner é um nginx servindo o `dist/` pré-renderizado (veja `Dockerfile` e `nginx.conf`).
+
+## Como rodar (desenvolvimento)
 
 ```bash
 npm install
