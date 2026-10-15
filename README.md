@@ -42,6 +42,7 @@ npm run preview  # serve dist/ em http://localhost:4173
 ```
 
 `dist/` é o que vai para a hospedagem (HTML estático com o texto de todas as seções, CSS, JS e `img/`).
+O endpoint estático `/healthz` responde `ok` e pode ser usado pelo health check da hospedagem.
 
 ## Onde fica cada coisa
 
