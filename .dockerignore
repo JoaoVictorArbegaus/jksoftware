@@ -1,0 +1,9 @@
+node_modules
+dist
+dist-ssr
+_legado-html
+_v3.1
+design
+Dockerfile
+.dockerignore
+*.md

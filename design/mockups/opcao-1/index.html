@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Mockup Opção 1 · Névoa em Camadas · JK Software</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- MOCKUP DESCARTÁVEL: só hero + serviços, para comparar direções. Não é a página final. -->
+<style>
+:root{
+  /* Opção 1: família do moodboard com mais profundidade */
+  --fundo:#0F282C; --base:#1B3F45; --elev:#24505A; --medio:#5F8F93;
+  --claro:#A7C9C2; --texto2:#C9DCD7; --gelo:#F2F6F3;
+  --serif:"Instrument Serif", Georgia, serif;
+  --sans:"Manrope", system-ui, sans-serif;
+  --gutter:clamp(16px, 4vw, 48px);
+  --ease:cubic-bezier(.22,.8,.24,1);
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--fundo);color:var(--gelo);font:400 1rem/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+img{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--claro);outline-offset:3px;border-radius:8px}
+.wrap{width:min(1240px, 100% - 2*var(--gutter));margin-inline:auto}
+
+/* Cabeçalho */
+.top{position:absolute;inset:0 0 auto;z-index:10}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:24px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand img{width:34px;height:auto}
+.brand span{font:italic 400 1.6rem/1 var(--serif);letter-spacing:-.01em}
+.nav{display:none;gap:28px;font-size:.95rem;color:var(--texto2)}
+.nav a{text-decoration:none;padding:6px 0;transition:color .2s}
+.nav a:hover{color:var(--gelo)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;font:600 .95rem/1 var(--sans);text-decoration:none;cursor:pointer;border:0;transition:transform .25s var(--ease),background-color .25s,box-shadow .25s}
+.btn-primary{background:var(--claro);color:var(--base);box-shadow:0 10px 24px -14px rgba(5,20,23,.8)}
+.btn-primary:hover{background:#BCD8D1;transform:translateY(-2px);box-shadow:0 16px 30px -14px rgba(5,20,23,.9)}
+.btn-ghost{color:var(--gelo);border:1px solid rgba(242,246,243,.35)}
+.btn-ghost:hover{border-color:var(--gelo);background:rgba(242,246,243,.06);transform:translateY(-2px)}
+.btn svg{width:20px;height:20px;flex:none}
+.top .btn{min-height:44px;padding:0 18px;font-size:.9rem}
+
+/* Hero */
+.hero{position:relative;min-height:max(640px, 100svh);display:flex;align-items:flex-end;overflow:hidden;isolation:isolate}
+.hero-media{position:absolute;inset:0;z-index:-2;max-width:1672px;margin-inline:auto}
+.hero-media img{width:100%;height:100%;object-fit:cover;object-position:62% 30%}
+.hero-media::after{content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(180deg, rgba(15,40,44,.55) 0%, rgba(15,40,44,0) 22%),
+    linear-gradient(0deg, rgba(15,40,44,.92) 0%, rgba(15,40,44,.35) 45%, rgba(15,40,44,0) 70%),
+    linear-gradient(90deg, rgba(15,40,44,.6) 0%, rgba(15,40,44,0) 60%)}
+.hero-inner{position:relative;padding:120px 0 128px;display:grid;gap:40px;width:min(1240px, 100% - 2*var(--gutter));margin-inline:auto}
+.label{font:600 .75rem/1.4 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--claro)}
+h1{font:500 clamp(2.5rem, 1.6rem + 3.2vw, 4rem)/1.02 var(--sans);letter-spacing:-.03em;margin:18px 0 20px;max-width:12ch}
+h1 em,h2 em{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:-.01em;color:var(--claro)}
+.lede{max-width:46ch;color:var(--texto2);font-size:1.0625rem}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-self:end}
+.chip{display:flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border-radius:999px;text-decoration:none;font-weight:500;font-size:.95rem;
+  background:rgba(242,246,243,.12);border:1px solid rgba(242,246,243,.28);color:var(--gelo);
+  -webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);transition:background-color .25s,transform .25s var(--ease)}
+.chip:hover{background:rgba(242,246,243,.22);transform:translateY(-2px)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.chip{background:rgba(27,63,69,.9)}}
+.dune{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:72px;z-index:-1;color:var(--base)}
+
+/* Serviços */
+.servicos{background:
+   radial-gradient(60% 50% at 85% 0%, rgba(95,143,147,.22), transparent 70%),
+   var(--base);padding:56px 0 72px}
+.sec-head{display:grid;gap:28px;margin-bottom:8px}
+h2{font:500 clamp(2rem, 1.5rem + 2vw, 3rem)/1.05 var(--sans);letter-spacing:-.025em}
+.sec-head p{color:var(--texto2);max-width:52ch;margin-top:14px}
+.tabs{position:relative;display:grid;grid-template-columns:1fr 1fr;padding:6px;border-radius:999px;background:rgba(15,40,44,.55);border:1px solid rgba(167,201,194,.18);max-width:640px}
+.tab-ind{position:absolute;top:6px;bottom:6px;left:6px;width:calc(50% - 6px);border-radius:999px;background:var(--claro);transform:translateX(calc(100% * var(--i, 0)));transition:transform .45s var(--ease)}
+.tab{position:relative;z-index:1;min-height:48px;border:0;background:none;color:var(--texto2);font:600 .95rem/1.2 var(--sans);border-radius:999px;cursor:pointer;transition:color .3s;padding:0 12px}
+.tab:hover{color:var(--gelo)}
+.tab[aria-selected="true"]{color:var(--base)}
+.tab .long{display:none}
+.panel{display:grid;gap:28px;margin-top:28px;align-items:center}
+.panel[hidden]{display:none}
+.panel h3{font:italic 400 clamp(1.75rem, 1.4rem + 1.2vw, 2.375rem)/1.1 var(--serif);margin-bottom:12px}
+.panel p{color:var(--texto2);max-width:50ch}
+.incl{columns:1;column-gap:32px;margin:20px 0 26px;padding:0;list-style:none}
+.incl li{break-inside:avoid;padding:6px 0 6px 22px;position:relative;color:var(--gelo)}
+.incl li::before{content:"";position:absolute;left:0;top:15px;width:10px;height:2px;background:var(--claro)}
+.btn-line{color:var(--claro);border:1px solid rgba(167,201,194,.5);min-height:46px}
+.btn-line:hover{background:var(--claro);color:var(--base);transform:translateY(-2px)}
+.photo{position:relative;border-radius:28px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(5,20,23,.9);justify-self:center;width:min(100%, 536px);margin:0}
+.photo img{width:100%;height:auto;aspect-ratio:536/200;object-fit:cover;transition:transform .8s var(--ease)}
+.photo:hover img{transform:scale(1.03)}
+.photo figcaption{position:absolute;inset:auto 0 0;padding:40px 22px 18px;font-size:.9rem;color:var(--gelo);background:linear-gradient(0deg, rgba(15,40,44,.88), rgba(15,40,44,0))}
+.photo-sites img{aspect-ratio:536/277;object-position:38% 50%}
+.extra{margin-top:32px;display:grid;gap:14px;padding:22px 24px;border-radius:24px;background:rgba(15,40,44,.5);border:1px solid rgba(167,201,194,.14);transition:border-color .25s,transform .25s var(--ease)}
+.extra:hover{border-color:rgba(167,201,194,.4)}
+.extra h3{font:600 1.125rem/1.3 var(--sans)}
+.extra p{color:var(--texto2);font-size:.95rem}
+.extra a{justify-self:start;color:var(--claro);font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;min-height:44px}
+.extra a:hover{text-decoration:underline;text-underline-offset:4px}
+
+.wa-float{position:fixed;right:20px;bottom:20px;z-index:40;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:var(--claro);color:var(--base);box-shadow:0 14px 30px -10px rgba(0,0,0,.6);transition:transform .25s var(--ease)}
+.wa-float:hover{transform:scale(1.06)}
+.wa-float svg{width:28px;height:28px}
+
+@media (min-width:768px){
+  .tab .long{display:inline}.tab .short{display:none}
+  .incl{columns:2}
+}
+@media (min-width:1024px){
+  .nav{display:flex}
+  .hero-inner{grid-template-columns:1fr auto;align-items:end;padding-bottom:136px}
+  .chips{width:420px}
+  .sec-head{grid-template-columns:1.05fr 1fr;align-items:end;gap:56px}
+  .tabs{max-width:none}
+  .panel{grid-template-columns:1.05fr 1fr;gap:56px}
+  .extra{grid-template-columns:auto 1fr auto;align-items:center;gap:28px}
+  .servicos{padding:64px 0 80px}
+}
+@media (min-width:1673px){
+  .hero-media{-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#"><img src="../../assets/Monograma%20JK%20em%20fitas%20et%C3%A9reas.png" alt="" width="34" height="24"><span>JK Software</span></a>
+    <nav class="nav" aria-label="Principal"><a href="#servicos">Serviços</a><a href="#">Como trabalhamos</a><a href="#">Depoimentos</a><a href="#">Contato</a></nav>
+    <a class="btn btn-primary" href="https://wa.me/5549998129876?text=Ol%C3%A1!%20Vi%20o%20site%20da%20JK%20Software%20e%20quero%20conversar%20sobre%20um%20projeto." rel="noopener">Fale conosco</a>
+  </div>
+</header>
+<main>
+<section class="hero">
+  <div class="hero-media"><img src="../../assets/Paisagem%20Et%C3%A9rea%20de%20N%C3%A9voa%20Turquesa.png" alt="" width="1672" height="941"></div>
+  <div class="hero-inner">
+    <div>
+      <p class="label">Estúdio de software · atendimento remoto em todo o Brasil</p>
+      <h1>Sistemas e sites <em>sob medida</em></h1>
+      <p class="lede">Para comerciantes e prestadores de serviço que querem um sistema ou um site feito do jeito que trabalham. Você fala direto com quem desenvolve.</p>
+      <div class="ctas">
+        <a class="btn btn-primary" href="https://wa.me/5549998129876?text=Ol%C3%A1!%20Vi%20o%20site%20da%20JK%20Software%20e%20quero%20conversar%20sobre%20um%20projeto." rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.8-1.3A9.5 9.5 0 1 0 12 2.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.7 7.6c.3-.6.6-.6.9-.6h.5c.2 0 .4 0 .6.5l.8 1.8c.1.2.1.4 0 .6l-.5.7c-.1.2-.1.4 0 .6.5.9 1.2 1.6 2.1 2.1.2.1.4.1.6 0l.7-.6c.2-.1.4-.2.6-.1l1.8.9c.3.1.4.3.4.5 0 .6-.2 1.2-.7 1.6-.5.4-1.2.6-1.9.5-1.4-.2-2.7-.9-3.9-2-1.2-1.1-1.9-2.3-2.3-3.7-.2-.8 0-1.6.3-2.2z" fill="currentColor"/></svg>
+          Pedir orçamento no WhatsApp</a>
+        <a class="btn btn-ghost" href="#servicos">Ver serviços</a>
+      </div>
+    </div>
+    <nav class="chips" aria-label="Atalhos de serviço">
+      <a class="chip" href="#servicos" data-goto="0">Sistemas</a>
+      <a class="chip" href="#servicos" data-goto="1">Sites</a>
+      <a class="chip" href="#automacao">Automação</a>
+    </nav>
+  </div>
+  <svg class="dune" viewBox="0 0 1440 72" preserveAspectRatio="none" aria-hidden="true"><path d="M0 72V44C180 8 360 0 560 22s360 44 560 22 260-30 320-26v52z" fill="currentColor"/></svg>
+</section>
+
+<section class="servicos" id="servicos" aria-labelledby="t-serv">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><h2 id="t-serv">O que <em>fazemos</em></h2>
+      <p>Dois caminhos com o mesmo cuidado: um sistema para organizar o seu dia a dia ou um site para ser encontrado e chamado. Cada projeto começa numa conversa.</p></div>
+    <div class="tabs" role="tablist" aria-label="Serviços principais" style="--i:0">
+      <span class="tab-ind" aria-hidden="true"></span>
+      <button class="tab" role="tab" id="tab-0" aria-controls="p-0" aria-selected="true"><span class="long">Sistemas sob medida</span><span class="short">Sistemas</span></button>
+      <button class="tab" role="tab" id="tab-1" aria-controls="p-1" aria-selected="false" tabindex="-1"><span class="long">Sites e landing pages</span><span class="short">Sites</span></button>
+    </div>
+    </div>
+    <div class="panel" role="tabpanel" id="p-0" aria-labelledby="tab-0">
+      <div>
+        <h3>Sistemas sob medida</h3>
+        <p>Um sistema pensado para a rotina do seu negócio, em vez de adaptar o negócio a um programa pronto.</p>
+        <ul class="incl"><li>Pedidos e orçamentos</li><li>Agenda de atendimentos</li><li>Cadastro de clientes</li><li>Controle de estoque</li><li>Relatórios simples</li><li>Acesso pelo celular</li></ul>
+        <a class="btn btn-line" href="https://wa.me/5549998129876?text=Ol%C3%A1!%20Vi%20o%20site%20da%20JK%20Software%20e%20quero%20um%20or%C3%A7amento%20de%20sistema%20sob%20medida." rel="noopener">Pedir orçamento de sistema</a>
+      </div>
+      <figure class="photo"><img src="../assets/recorte-b-dunas-quadro.png" alt="" width="536" height="200"><figcaption>Feito para o seu fluxo, do primeiro pedido ao relatório.</figcaption></figure>
+    </div>
+    <div class="panel" role="tabpanel" id="p-1" aria-labelledby="tab-1" hidden>
+      <div>
+        <h3>Sites e landing pages</h3>
+        <p>Uma página clara, rápida no celular e pronta para levar o cliente até o seu WhatsApp.</p>
+        <ul class="incl"><li>Site institucional</li><li>Landing page de campanha</li><li>Rápido no celular</li><li>Botões para o WhatsApp</li><li>Pronto para o Google</li><li>Textos revisados com você</li></ul>
+        <a class="btn btn-line" href="https://wa.me/5549998129876?text=Ol%C3%A1!%20Vi%20o%20site%20da%20JK%20Software%20e%20quero%20um%20or%C3%A7amento%20de%20site%20ou%20landing%20page." rel="noopener">Pedir orçamento de site</a>
+      </div>
+      <figure class="photo photo-sites"><img src="../assets/recorte-a-dunas-faixa.png" alt="" width="1214" height="277"><figcaption>Uma vitrine para quem procura o seu serviço.</figcaption></figure>
+    </div>
+    <div class="extra" id="automacao">
+      <p class="label">Também fazemos</p>
+      <div><h3>Automação e integrações</h3><p>Conectar o que você já usa e tirar tarefas repetidas do seu dia.</p></div>
+      <a href="https://wa.me/5549998129876?text=Ol%C3%A1!%20Vi%20o%20site%20da%20JK%20Software%20e%20quero%20um%20or%C3%A7amento%20de%20automa%C3%A7%C3%A3o%2Fintegra%C3%A7%C3%A3o." rel="noopener">Conversar sobre automação <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+</main>
+<a class="wa-float" href="https://wa.me/5549998129876?text=Ol%C3%A1!%20Vi%20o%20site%20da%20JK%20Software%20e%20quero%20conversar%20sobre%20um%20projeto." rel="noopener" aria-label="Conversar no WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.8-1.3A9.5 9.5 0 1 0 12 2.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.7 7.6c.3-.6.6-.6.9-.6h.5c.2 0 .4 0 .6.5l.8 1.8c.1.2.1.4 0 .6l-.5.7c-.1.2-.1.4 0 .6.5.9 1.2 1.6 2.1 2.1.2.1.4.1.6 0l.7-.6c.2-.1.4-.2.6-.1l1.8.9c.3.1.4.3.4.5 0 .6-.2 1.2-.7 1.6-.5.4-1.2.6-1.9.5-1.4-.2-2.7-.9-3.9-2-1.2-1.1-1.9-2.3-2.3-3.7-.2-.8 0-1.6.3-2.2z" fill="currentColor"/></svg>
+</a>
+<script>
+(function(){
+  const list=document.querySelector('[role=tablist]');const tabs=[...list.querySelectorAll('[role=tab]')];
+  function select(i,focus){tabs.forEach((t,k)=>{const on=k===i;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1;document.getElementById(t.getAttribute('aria-controls')).hidden=!on;});list.style.setProperty('--i',i);if(focus)tabs[i].focus();}
+  tabs.forEach((t,i)=>{t.addEventListener('click',()=>select(i));t.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();select((i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length,true);}});});
+  document.querySelectorAll('[data-goto]').forEach(a=>a.addEventListener('click',()=>select(+a.dataset.goto)));
+  window.__select=select;
+})();
+</script>
+</body>
+</html>
