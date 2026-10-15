@@ -11,13 +11,11 @@ import { ActivityRings } from './demos/ActivityRings';
 import { AutomationFlow } from './demos/AutomationFlow';
 import { BellButton } from './demos/BellButton';
 import { CardSwap } from './demos/CardSwap';
-import { CurvedLoop } from './demos/CurvedLoop';
 import { DocFolder } from './demos/DocFolder';
 import { MetricCard } from './demos/MetricCard';
 import { MorphBooking } from './demos/MorphBooking';
 import { ReceiptPrinter } from './demos/ReceiptPrinter';
 import { TearButton } from './demos/TearButton';
-import { UptimeCard } from './demos/UptimeCard';
 
 type Demo = keyof typeof exemplos.demos;
 
@@ -81,8 +79,6 @@ const SITES = [
 export function Examples() {
   return (
     <section className="section deep deep-exemplos" id="exemplos" aria-labelledby="exemplos-titulo">
-      {/* faixa curva que dá para arrastar: abre a seção com o que fazemos */}
-      <CurvedLoop text={exemplos.faixa.texto} separator={exemplos.faixa.separador} />
       <div className="wrap">
         <SecHead
           eyebrow={exemplos.eyebrow}
@@ -123,27 +119,22 @@ export function Examples() {
               </div>
             </Tile>
           </LiftItem>
-          <LiftItem i={5} className="demos__monitor">
-            <Tile demo="monitor" className="demo-tile--monitor">
-              <UptimeCard />
-            </Tile>
-          </LiftItem>
-          <LiftItem i={6} className="demos__pasta">
+          <LiftItem i={5} className="demos__pasta">
             <Tile demo="pasta" className="demo-tile--pasta">
               <DocFolder />
             </Tile>
           </LiftItem>
-          <LiftItem i={7} className="demos__agenda">
+          <LiftItem i={6} className="demos__agenda">
             <Tile demo="agenda" className="demo-tile--agenda">
               <MorphBooking />
             </Tile>
           </LiftItem>
-          <LiftItem i={8} className="demos__conta">
+          <LiftItem i={7} className="demos__conta">
             <Tile demo="conta" className="demo-tile--conta">
               <AccountMenu />
             </Tile>
           </LiftItem>
-          <LiftItem i={9} className="demos__sites">
+          <LiftItem i={8} className="demos__sites">
             <Tile demo="sites" className="demo-tile--sites">
               <CardSwap label="Exemplos de sites">
                 {SITES.map((s) => (

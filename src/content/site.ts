@@ -128,7 +128,6 @@ export const exemplos = {
   tituloSerif: 'mexa à vontade',
   intro: 'Pedaços de sistemas, sites e automações como os que entregamos, funcionando aqui mesmo. Arraste, puxe, toque.',
   nota: 'Dados e marcas fictícios, só para demonstração.',
-  faixa: { texto: 'Sistemas sob medida ✦ Sites ✦ Automações ✦ Integrações ✦ Painéis ✦ Aplicativos web', separador: '✦' },
   demos: {
     painel: { tag: 'Sistema', titulo: 'Painel de vendas', texto: 'Passe o dedo no gráfico para ver cada dia contra o período anterior.' },
     metas: { tag: 'Sistema', titulo: 'Metas da equipe', texto: 'Cada anel conta até o resultado; o que passa da meta dá outra volta.' },
@@ -136,7 +135,6 @@ export const exemplos = {
     comanda: { tag: 'Sistema', titulo: 'Comanda direto no balcão', texto: 'O pedido sai impresso na hora. Puxe o papel para destacar.' },
     sites: { tag: 'Sites', titulo: 'Sites com a cara do seu negócio', texto: 'Arraste o da frente para o lado, ou toque num dos de trás.' },
     detalhes: { tag: 'Detalhes', titulo: 'Interações que dão vontade de clicar', texto: 'Um aviso de estoque com sino de verdade e um cupom que se destaca como papel.' },
-    monitor: { tag: 'Suporte', titulo: 'De olho no seu sistema, todo dia', texto: 'Passe o dedo nas barras; toque num dia com incidente para ver o que aconteceu e como resolvemos.' },
     pasta: { tag: 'Sistema', titulo: 'Documentos num lugar só', texto: 'Abra a pasta e toque num documento para ler.' },
     agenda: { tag: 'Sistema', titulo: 'Agendamento em dois toques', texto: 'O botão vira o formulário e depois a confirmação.' },
     conta: { tag: 'Sistema', titulo: 'Área do cliente', texto: 'O cartão vira o menu: status, tema, trocar de conta e sair segurando o botão.' },

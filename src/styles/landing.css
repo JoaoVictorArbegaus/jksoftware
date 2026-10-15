@@ -1700,13 +1700,6 @@ h3 { font-weight: 700; letter-spacing: -.015em; line-height: 1.25; }
 }
 .deep .note { color: var(--gelo-2); }
 
-/* ---------- Faixa curva (CurvedLoop) ---------- */
-.curved-loop { width: 100%; margin-bottom: clamp(4px, 1.5vw, 20px); cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
-.curved-loop.is-dragging { cursor: grabbing; }
-.curved-loop__svg { display: block; width: 100%; aspect-ratio: 1440 / 200; overflow: visible; font-family: var(--serif); font-style: italic; font-weight: 400; font-variation-settings: "SOFT" 60, "WONK" 1, "opsz" 96; }
-.curved-loop__text { fill: rgba(242, 246, 243, .92); }
-.curved-loop__sep { fill: var(--menta); font-style: normal; }
-
 /* ---------- Grade de quadros ---------- */
 .demos { display: grid; gap: 18px; margin: 0; padding: 0; list-style: none; }
 .demos > li { display: flex; min-width: 0; }
@@ -1971,10 +1964,8 @@ h3 { font-weight: 700; letter-spacing: -.015em; line-height: 1.25; }
   .roll__strip, .flow__rail span, .tear__line, .bell__slash { transition: none; }
   .flow__spin, .flow__tick path, .tear__stub { animation: none; }
 }
-/* celular: a faixa curva ocupa mais que a tela (texto maior, só o miolo do arco aparece) e os botões de período cabem */
+/* celular: os botões de período do painel cabem */
 @media (max-width: 767px) {
-  .curved-loop { overflow: hidden; }
-  .curved-loop__svg { width: 240%; max-width: none; margin-left: -70%; }
   .demo-tile { padding: 20px 18px; }
   .metric__period { min-height: 34px; padding: 0 10px; font-size: .75rem; }
 }
@@ -2274,60 +2265,14 @@ h3 { font-weight: 700; letter-spacing: -.015em; line-height: 1.25; }
   .sm__layers span, .sm__panel, .sm__label, .sm__socials li, .sm-toggle__icon, .sm-toggle__text span { transition-duration: .01s !important; transition-delay: 0s !important; }
 }
 
-/* ================= v11 (15/10/2026): mais demos em "Na prática": status, pasta, agendamento e área do cliente ================= */
+/* ================= v11 (15/10/2026): mais demos em "Na prática": pasta, agendamento e área do cliente ================= */
+/* sem o status dos sistemas: pasta, agendamento e área do cliente em três colunas iguais (tablet: a área do cliente na largura toda) */
 @media (min-width: 768px) {
-  .demos__monitor { grid-column: 1 / -1; }
+  .demos__conta { grid-column: 1 / -1; }
 }
 @media (min-width: 1100px) {
-  .demos__monitor { grid-column: span 7; }
-  .demos__pasta { grid-column: span 5; }
-  .demos__agenda { grid-column: span 5; }
-  .demos__conta { grid-column: span 7; }
+  .demos__pasta, .demos__agenda, .demos__conta { grid-column: span 4; }
 }
-
-/* ---------- Status dos sistemas (UptimeCard) ---------- */
-.uptime { width: 100%; color: var(--gelo); user-select: none; -webkit-user-select: none; }
-.uptime__top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
-.uptime__title { margin: 0; font-weight: 700; font-size: .9375rem; }
-.uptime__ok { display: inline-flex; align-items: center; gap: 6px; margin: 0; color: var(--menta); font-size: .8125rem; font-weight: 600; }
-.uptime__ok .ic { width: 15px; height: 15px; }
-.uptime__summary { margin: 4px 0 0; overflow: hidden; color: var(--gelo-2); font-size: .8125rem; white-space: nowrap; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
-.uptime__bars { margin-top: 16px; border-radius: 8px; cursor: pointer; touch-action: pan-y; }
-.uptime__bars:focus-visible { outline: 2px solid var(--menta); outline-offset: 6px; }
-.uptime__service + .uptime__service { margin-top: 12px; }
-.uptime__name { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: .75rem; }
-.uptime__name span:first-child { font-weight: 600; }
-.uptime__name span:last-child { color: var(--gelo-2); font-variant-numeric: tabular-nums; }
-.uptime__row { display: flex; gap: 2px; height: 28px; }
-.uptime__row i { flex-basis: 0; min-width: 0; border-radius: 2px; transition: opacity .15s; }
-.uptime__row i.is-up { background: #5FC9B8; }
-.uptime__row i.is-degraded { background: #E9C98A; }
-.uptime__row i.is-down { background: var(--erro); }
-.uptime__row i.is-none { background: rgba(167, 201, 194, .16); }
-.uptime__row i.is-dim { opacity: .5; }
-.uptime__axis { display: flex; justify-content: space-between; margin-top: 8px; color: rgba(207, 224, 221, .7); font-size: .75rem; }
-.uptime__log { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .26s cubic-bezier(.23, 1, .32, 1), opacity .26s; }
-.uptime__log.is-open { grid-template-rows: 1fr; opacity: 1; }
-.uptime__log > div { overflow: hidden; }
-.uptime__card { margin-top: 16px; padding: 14px 16px; border-radius: 16px; background: rgba(2, 16, 21, .38); border: 1px solid rgba(167, 201, 194, .16); }
-.uptime__card-top { display: flex; align-items: center; justify-content: space-between; font-size: .875rem; }
-.uptime__card-top button { display: grid; place-items: center; width: 32px; height: 32px; border: 0; border-radius: 50%; background: none; color: var(--gelo-2); cursor: pointer; }
-.uptime__card-top button:hover { background: rgba(242, 246, 243, .08); color: var(--gelo); }
-.uptime__card-top .ic { width: 15px; height: 15px; }
-.uptime__none { margin: 4px 0 0; color: var(--gelo-2); font-size: .875rem; }
-.uptime__inc { margin-top: 10px; }
-.uptime__inc > p { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 0; color: var(--gelo-2); font-size: .8125rem; }
-.uptime__inc > p strong { color: var(--gelo); }
-.uptime__badge { padding: 3px 8px; border-radius: 999px; font-size: .6875rem; font-weight: 700; }
-.uptime__badge.is-degraded { background: rgba(233, 201, 138, .16); color: #F2D9A8; }
-.uptime__badge.is-down { background: rgba(255, 194, 181, .16); color: var(--erro); }
-.uptime__inc ol { margin: 10px 0 0 4px; padding: 0 0 0 14px; list-style: none; border-left: 1px solid rgba(167, 201, 194, .25); }
-.uptime__inc li { position: relative; padding-bottom: 8px; font-size: .8125rem; }
-.uptime__inc li:last-child { padding-bottom: 0; }
-.uptime__inc li::before { content: ""; position: absolute; top: 7px; left: -17.5px; width: 6px; height: 6px; border-radius: 50%; background: var(--agua); }
-.uptime__inc time { color: var(--menta); font-variant-numeric: tabular-nums; }
-.uptime__inc li span { color: var(--gelo-2); }
-@media (max-width: 520px) { .uptime__row { gap: 1px; } }
 
 /* ---------- Pasta de documentos (DocFolder) ---------- */
 .folder { --fw: 236px; --fh: 172px; display: grid; place-items: center; width: 100%; min-height: 330px; padding-top: 110px; }
@@ -2475,7 +2420,7 @@ h3 { font-weight: 700; letter-spacing: -.015em; line-height: 1.25; }
 .acct__check { margin-left: auto; color: var(--menta) !important; }
 .acct__add { color: var(--gelo-2) !important; }
 @media (prefers-reduced-motion: reduce) {
-  .folder__doc, .folder__front, .morph__shell, .morph__face, .acct__drawer, .acct__pages, .acct__seg-ind, .uptime__log { transition-duration: .01s !important; }
+  .folder__doc, .folder__front, .morph__shell, .morph__face, .acct__drawer, .acct__pages, .acct__seg-ind { transition-duration: .01s !important; }
 }
 /* pasta no celular: documentos menores e leque mais fechado (cabem no quadro) */
 @media (max-width: 480px) {
