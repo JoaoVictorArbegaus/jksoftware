@@ -304,3 +304,10 @@ O número do WhatsApp fica numa única constante (`WHATSAPP_NUMERO`) em `src/con
 - **Rodada 13 (16/10/2026).**
   - **Títulos em Inter Tight, destaque pelo peso:** a Bricolage também não agradou. Pela referência do dono ("AI Workforce. / Built for Freight Teams."), testadas Inter Tight, Geist, Instrument Sans e Hanken Grotesk; ficou a **Inter Tight**: primeira parte 600, destaque 400 no mesmo tom um pouco mais suave (gelo a 76% no escuro, tinta a 72% no claro). O verde-água saiu das palavras de destaque (o dono não gostou do tom); continua em ícones, rótulos, botões e detalhes. Números do processo em 300. A Fraunces fica só na marca.
   - **Menu do desktop (GooeyNav):** corrigido o bug de pedaços da pílula presos em outros itens. Acontecia quando a pílula era apagada (seção fora do menu) no meio da viagem das gotas: a massa reservada nunca era devolvida. Agora a reserva é zerada ao apagar, e sem gotas no ar só o item ativo pode ter pílula.
+
+- **Rodada 14 (16/10/2026, polish com o impeccable).**
+  - **Título invertido:** primeira parte leve (Inter Tight 400, gelo/tinta) e a segunda em **negrito azul**: `--azul` #8CCBF0 no fundo escuro e `--azul-fundo` #17618A na névoa clara (o cinza não agradou; o azul é outro tom, não o verde-água). Vale para todos os h1/h2 e para os destaques dos cards de serviço.
+  - **Processo:** números (01, 02, 03) e a seta centralizados na altura do card.
+  - **Diferenciais:** texto colado ao ícone e ocupando a largura do card (antes ficava no meio com sobra à direita).
+  - **Topo:** a partir de 1200px cada frase do título fica numa linha ("Tecnologia sob medida." / "Feita para o seu negócio."), coluna do texto mais larga (vitrine em 540px) e texto de apoio em até 44ch; abaixo disso quebra normal.
+  - **Movimento:** as curvas com "quique" (overshoot) dos demos e menus viraram desaceleração exponencial, como pede o impeccable (detector limpo).
