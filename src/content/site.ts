@@ -76,6 +76,13 @@ export const hero = {
   tituloSerif: 'Feita para o seu negócio.',
   lede: 'Sistemas, sites e automações para empresas que querem mais eficiência, agilidade e resultado.',
   cta: 'Vamos conversar',
+  ctaSecundario: 'Ver exemplos',
+  /** Faixa abaixo dos botões: os diferenciais em uma linha cada (mesmos fatos da seção Sobre e do rodapé). */
+  provas: [
+    { icone: 'user', texto: 'Você fala direto com quem desenvolve' },
+    { icone: 'shield', texto: 'Suporte depois da entrega' },
+    { icone: 'pin', texto: 'Atendimento online em todo o Brasil' },
+  ] as const,
   card: 'Soluções digitais que se adaptam à sua realidade e impulsionam o seu crescimento.',
   /** Vitrine do topo: o que a pessoa está vendo em cada aba (aparece antes da cena, não depois). */
   vitrine: {

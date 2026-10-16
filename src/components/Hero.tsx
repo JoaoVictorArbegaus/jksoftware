@@ -46,7 +46,20 @@ export function Hero() {
                 <Icon name="arrow" className="ic-arrow" />
               </span>
             </Button>
+            {/* secundário: leva aos exemplos interativos */}
+            <a className="hero-link" href="#exemplos">
+              {hero.ctaSecundario}
+              <Icon name="arrow" />
+            </a>
           </span>
+          <ul className="hero-provas reveal" role="list">
+            {hero.provas.map((p) => (
+              <li key={p.texto}>
+                <Icon name={p.icone} />
+                {p.texto}
+              </li>
+            ))}
+          </ul>
         </m.div>
         {/* vitrine grande: os três serviços funcionando, em abas que trocam sozinhas (no lugar do card pequeno) */}
         <div className="hero-visual">

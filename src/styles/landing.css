@@ -2797,3 +2797,37 @@ h2 { font-size: clamp(2.375rem, 1.5rem + 3vw, 4rem); line-height: 1.04; }
 .hero .btn.btn-hero:hover .btn-hero__arrow, .inv-exemplos .btn.btn-hero:hover .btn-hero__arrow { width: auto; height: auto; background: none; box-shadow: none; color: inherit; }
 .hero .btn.btn-hero, .inv-exemplos .btn.btn-hero { padding-right: 24px; }
 .hero .btn-hero__arrow .ic-arrow, .inv-exemplos .btn-hero__arrow .ic-arrow { width: 20px; height: 20px; }
+
+/* ---------- Topo mais cheio: link secundário, faixa de diferenciais e altura menor ---------- */
+.hero-cta { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; }
+.hero-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  color: var(--tinta);
+  font: 600 1rem/1 var(--sans);
+  text-decoration: underline;
+  text-decoration-color: rgba(33, 57, 120, .35);
+  text-underline-offset: 6px;
+  transition: text-decoration-color .25s, color .25s;
+}
+.hero-link .ic { width: 18px; height: 18px; transition: transform .35s var(--ease); }
+.hero-link:hover { color: var(--azul-fundo); text-decoration-color: currentColor; }
+.hero-link:hover .ic { transform: translateX(4px); }
+.hero-provas { display: flex; flex-wrap: wrap; gap: 12px 28px; margin: 44px 0 0; padding: 22px 0 0; list-style: none; border-top: 1px solid rgba(33, 57, 120, .18); max-width: 640px; }
+.hero-provas li { display: inline-flex; align-items: center; gap: 10px; color: var(--tinta-2); font-size: .9375rem; font-weight: 500; }
+.hero-provas .ic { flex: none; width: 18px; height: 18px; color: var(--azul-fundo); }
+@media (min-width: 960px) {
+  .hero { min-height: clamp(640px, 88svh, 860px); padding-bottom: clamp(110px, 10vw, 150px); }
+}
+@media (max-width: 639px) {
+  .hero-cta { display: flex; flex-direction: column; align-items: stretch; gap: 6px; }
+  .hero-link { justify-content: center; }
+  .hero-provas { flex-direction: column; gap: 10px; margin-top: 28px; padding-top: 18px; }
+}
+@media (min-width: 960px) {
+  .hero-provas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; max-width: 700px; }
+  .hero-provas li { align-items: flex-start; line-height: 1.4; }
+  .hero-provas .ic { margin-top: 2px; }
+}
