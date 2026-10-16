@@ -2831,3 +2831,7 @@ h2 { font-size: clamp(2.375rem, 1.5rem + 3vw, 4rem); line-height: 1.04; }
   .hero-provas li { align-items: flex-start; line-height: 1.4; }
   .hero-provas .ic { margin-top: 2px; }
 }
+/* celular: topo enxuto, sem o link secundário e sem a faixa de diferenciais (ficam do tablet para cima) */
+@media (max-width: 767px) {
+  .hero-link, .hero-provas { display: none; }
+}
