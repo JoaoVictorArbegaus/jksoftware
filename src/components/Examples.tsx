@@ -24,7 +24,7 @@ type Demo = keyof typeof exemplos.demos;
 function Tile({ demo, className, children }: { demo: Demo; className: string; children: ReactNode }) {
   const d = exemplos.demos[demo];
   return (
-    <Glass tone="dark" glow className={`demo-tile ${className}`}>
+    <Glass tone="deep" glow className={`demo-tile ${className}`}>
       <div className="demo-tile__head">
         <span className="demo-tile__tag">{d.tag}</span>
         <h3>{d.titulo}</h3>
@@ -92,7 +92,7 @@ export function Examples() {
     setAberta((a) => !a);
   };
   return (
-    <section ref={secaoRef} className={aberta ? 'section deep deep-exemplos is-open' : 'section deep deep-exemplos'} id="exemplos" aria-labelledby="exemplos-titulo">
+    <section ref={secaoRef} className={aberta ? 'section mist deep-exemplos inv-exemplos is-open' : 'section mist deep-exemplos inv-exemplos'} id="exemplos" aria-labelledby="exemplos-titulo">
       <div className="wrap">
         <SecHead
           eyebrow={exemplos.eyebrow}

@@ -172,7 +172,7 @@ function ContactForm() {
   ];
 
   return (
-    <Glass as="form" tone="dark" glow liquid className="contact-form reveal" id="form-contato" noValidate data-form="" onSubmit={onSubmit}>
+    <Glass as="form" tone="deep" glow liquid className="contact-form reveal" id="form-contato" noValidate data-form="" onSubmit={onSubmit}>
       <Stepper
         steps={passos}
         current={etapa}
@@ -210,7 +210,7 @@ function ContactForm() {
 
 export function Contact() {
   return (
-    <section className="section deep deep-contato" id="contato" aria-labelledby="contato-titulo">
+    <section className="section mist inv-contato" id="contato" aria-labelledby="contato-titulo">
       <Topo seed={87} />
       <div className="wrap contact-grid">
         <div className="contact-copy">

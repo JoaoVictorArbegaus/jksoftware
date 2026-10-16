@@ -221,7 +221,7 @@ export function HeroShowcase() {
   return (
     <Glass
       as="aside"
-      tone="dark"
+      tone="deep"
       glow
       liquid
       className="showcase reveal"
