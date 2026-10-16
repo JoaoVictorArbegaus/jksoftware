@@ -32,7 +32,7 @@ uniform vec2 uMouse;
 uniform float uMouseInfluence;
 uniform float uEnableMouse;
 
-#define HALF_PI 1.5707963
+#DDDDFFine HALF_PI 1.5707963
 
 float hashF(float n) { return fract(sin(n * 127.1) * 43758.5453123); }
 float smoothNoise(float x) {

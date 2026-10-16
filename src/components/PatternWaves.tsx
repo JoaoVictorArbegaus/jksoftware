@@ -265,7 +265,7 @@ type Props = {
   className?: string;
 };
 
-export function PatternWaves({ preset = 'silk', color = '#1E5260', opacity = 1, fade = 'edges', fadeSize = 0.5, speed, cursorSize = 50, cursorStrength = 0.6, className }: Props) {
+export function PatternWaves({ preset = 'silk', color = '#1B2363', opacity = 1, fade = 'edges', fadeSize = 0.5, speed, cursorSize = 50, cursorStrength = 0.6, className }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
