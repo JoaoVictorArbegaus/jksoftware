@@ -2786,3 +2786,9 @@ h2 { font-size: clamp(2.375rem, 1.5rem + 3vw, 4rem); line-height: 1.04; }
   .step-arrow { display: none; }
   .steps { gap: 12px; }
 }
+/* seta dos botões de vidro no mesmo azul do destaque do título (o marinho quase preto destoava) */
+.hero .btn-hero__arrow, .inv-exemplos .btn-hero__arrow { background: linear-gradient(180deg, #2E4C99, var(--azul-fundo)); color: #fff; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 4px 10px -4px rgba(33, 57, 120, .6); }
+.hero .btn.btn-hero:hover .btn-hero__arrow, .inv-exemplos .btn.btn-hero:hover .btn-hero__arrow { background: linear-gradient(180deg, #3858A8, #2A4488); }
+/* "Quero algo assim" fica sobre o trecho escuro da montanha: texto e ícone brancos */
+.inv-exemplos .btn.btn-hero { color: #fff; text-shadow: 0 1px 2px rgba(10, 25, 67, .45); }
+.inv-exemplos .btn-hero .ic-wa { color: #fff; }
