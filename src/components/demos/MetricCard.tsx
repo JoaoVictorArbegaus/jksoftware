@@ -238,8 +238,8 @@ export function MetricCard() {
         <svg aria-hidden="true" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none">
           <defs>
             <linearGradient id={`${clipId}-fill`} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stopColor="#9DE8DE" stopOpacity=".28" />
-              <stop offset="1" stopColor="#9DE8DE" stopOpacity="0" />
+              <stop offset="0" stopColor="#9DBCE8" stopOpacity=".28" />
+              <stop offset="1" stopColor="#9DBCE8" stopOpacity="0" />
             </linearGradient>
             <clipPath id={clipId}>
               <rect height={H + 20} width={(x / 100) * W} x={0} y={-10} />

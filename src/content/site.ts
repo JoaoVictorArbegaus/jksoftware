@@ -76,7 +76,23 @@ export const hero = {
   tituloSerif: 'Feita para o seu negócio.',
   lede: 'Sistemas, sites e automações para empresas que querem mais eficiência, agilidade e resultado.',
   cta: 'Vamos conversar',
+  ctaSecundario: 'Ver exemplos',
+  /** Faixa abaixo dos botões: os diferenciais em uma linha cada (mesmos fatos da seção Sobre e do rodapé). */
+  provas: [
+    { icone: 'user', texto: 'Você fala direto com quem desenvolve' },
+    { icone: 'shield', texto: 'Suporte depois da entrega' },
+    { icone: 'pin', texto: 'Atendimento online em todo o Brasil' },
+  ] as const,
   card: 'Soluções digitais que se adaptam à sua realidade e impulsionam o seu crescimento.',
+  /** Vitrine do topo: o que a pessoa está vendo em cada aba (aparece antes da cena, não depois). */
+  vitrine: {
+    rotulo: 'Veja funcionando',
+    legendas: [
+      'Um painel com os pedidos e o faturamento da sua empresa, atualizado sozinho.',
+      'Um site rápido e bonito, que aparece bem no Google e leva o cliente direto ao WhatsApp.',
+      'O sistema faz o trabalho repetido: do pedido no WhatsApp até o aviso ao cliente.',
+    ],
+  },
   fundo: { src: '/img/hero-montanhas-1672.webp', w: 1672, h: 941 },
 };
 
@@ -128,6 +144,8 @@ export const exemplos = {
   tituloSerif: 'mexa à vontade',
   intro: 'Pedaços de sistemas, sites e automações como os que entregamos, funcionando aqui mesmo. Arraste, puxe, toque.',
   nota: 'Dados e marcas fictícios, só para demonstração.',
+  verMais: 'Ver todos os exemplos',
+  verMenos: 'Mostrar menos',
   demos: {
     painel: { tag: 'Sistema', titulo: 'Painel de vendas', texto: 'Passe o dedo no gráfico para ver cada dia contra o período anterior.' },
     metas: { tag: 'Sistema', titulo: 'Metas da equipe', texto: 'Cada anel conta até o resultado; o que passa da meta dá outra volta.' },
@@ -157,9 +175,9 @@ export const processo = {
   eyebrow: 'Processo',
   intro: 'Um processo simples, transparente e colaborativo, para que você tenha clareza em cada etapa.',
   passos: [
-    { n: '01', titulo: 'Entendemos seu objetivo', texto: 'Ouvimos suas ideias, analisamos suas necessidades e alinhamos os próximos passos.' },
-    { n: '02', titulo: 'Desenhamos a solução', texto: 'Planejamos a melhor estratégia para o seu projeto, com foco em usabilidade e resultado.' },
-    { n: '03', titulo: 'Desenvolvemos com você', texto: 'Construímos de forma transparente, com acompanhamento constante até a entrega.' },
+    { n: '01', titulo: 'Entendemos seu objetivo', texto: 'Ouvimos sua ideia e alinhamos os próximos passos.' },
+    { n: '02', titulo: 'Desenhamos a solução', texto: 'Planejamos a solução com foco em resultado.' },
+    { n: '03', titulo: 'Desenvolvemos com você', texto: 'Construímos junto com você, do início à entrega.' },
   ],
 };
 

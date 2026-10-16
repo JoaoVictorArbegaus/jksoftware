@@ -1,4 +1,5 @@
-import type { ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
+import { useLenis } from 'lenis/react';
 import { exemplos, MENSAGENS, whatsapp } from '../content/site';
 import { Button } from './Button';
 import { Glass } from './Glass';
@@ -23,7 +24,7 @@ type Demo = keyof typeof exemplos.demos;
 function Tile({ demo, className, children }: { demo: Demo; className: string; children: ReactNode }) {
   const d = exemplos.demos[demo];
   return (
-    <Glass tone="dark" glow className={`demo-tile ${className}`}>
+    <Glass tone="deep" glow className={`demo-tile ${className}`}>
       <div className="demo-tile__head">
         <span className="demo-tile__tag">{d.tag}</span>
         <h3>{d.titulo}</h3>
@@ -77,8 +78,21 @@ const SITES = [
 
 /** "Na prática": demos interativas de sistema, automação e site, numa grade de quadros de vidro. */
 export function Examples() {
+  // recolhida por padrão: só os destaques (1 no celular, 2 no desktop); o resto abre no botão
+  const [aberta, setAberta] = useState(false);
+  const secaoRef = useRef<HTMLElement>(null);
+  const lenis = useLenis();
+  const alternar = () => {
+    // ao recolher, volta ao começo da seção (o conteúdo de baixo some e a pessoa ficaria perdida no meio da página)
+    const el = secaoRef.current;
+    if (aberta && el) {
+      if (lenis) lenis.scrollTo(el, { offset: 0, immediate: false });
+      else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    setAberta((a) => !a);
+  };
   return (
-    <section className="section deep deep-exemplos" id="exemplos" aria-labelledby="exemplos-titulo">
+    <section ref={secaoRef} className={aberta ? 'section mist deep-exemplos inv-exemplos is-open' : 'section mist deep-exemplos inv-exemplos'} id="exemplos" aria-labelledby="exemplos-titulo">
       <div className="wrap">
         <SecHead
           eyebrow={exemplos.eyebrow}
@@ -90,7 +104,7 @@ export function Examples() {
             </>
           }
         />
-        <LiftList as="ul" className="demos" role="list">
+        <LiftList as="ul" className="demos" role="list" id="demos-lista">
           <LiftItem i={0} className="demos__painel">
             <Tile demo="painel" className="demo-tile--painel">
               <MetricCard />
@@ -144,8 +158,14 @@ export function Examples() {
             </Tile>
           </LiftItem>
         </LiftList>
+        <div className="demos__more">
+          <button type="button" className="demos__toggle" aria-expanded={aberta} aria-controls="demos-lista" onClick={alternar}>
+            {aberta ? exemplos.verMenos : exemplos.verMais}
+            <Icon name="chevron" />
+          </button>
+        </div>
         <Reveal as="div" className="demos__cta">
-          <Button href={whatsapp(MENSAGENS.geral)} size="lg" className="btn-hero" data-wa="geral" external specular specularRadius={16}>
+          <Button href={whatsapp(MENSAGENS.geral)} size="lg" className="btn-hero" data-wa="geral" external specular specularRadius={16} liquid>
             <Icon name="whatsapp" className="ic-wa" />
             {exemplos.cta}
             <span className="btn-hero__arrow" aria-hidden="true">

@@ -39,14 +39,27 @@ export function Hero() {
           </h1>
           <p className="lede reveal">{hero.lede}</p>
           <span className="reveal hero-cta">
-            <Button href={whatsapp(MENSAGENS.geral)} size="lg" className="btn-hero" data-wa="geral" external specular specularRadius={16}>
+            <Button href={whatsapp(MENSAGENS.geral)} size="lg" className="btn-hero" data-wa="geral" external specular specularRadius={16} liquid>
               <Icon name="whatsapp" className="ic-wa" />
               {hero.cta}
               <span className="btn-hero__arrow" aria-hidden="true">
                 <Icon name="arrow" className="ic-arrow" />
               </span>
             </Button>
+            {/* secundário: leva aos exemplos interativos */}
+            <a className="hero-link" href="#exemplos">
+              {hero.ctaSecundario}
+              <Icon name="arrow" />
+            </a>
           </span>
+          <ul className="hero-provas reveal" role="list">
+            {hero.provas.map((p) => (
+              <li key={p.texto}>
+                <Icon name={p.icone} />
+                {p.texto}
+              </li>
+            ))}
+          </ul>
         </m.div>
         {/* vitrine grande: os três serviços funcionando, em abas que trocam sozinhas (no lugar do card pequeno) */}
         <div className="hero-visual">

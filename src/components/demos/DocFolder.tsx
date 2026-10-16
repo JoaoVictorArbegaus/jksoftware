@@ -8,10 +8,10 @@
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
 
 const DOCS = [
-  { nome: 'Proposta comercial', tipo: 'PDF · 4 páginas', cor: '#9DE8DE', linhas: ['Escopo: loja virtual + pedidos', 'Prazo: 6 semanas', 'Investimento em 3 etapas'] },
+  { nome: 'Proposta comercial', tipo: 'PDF · 4 páginas', cor: '#9DBCE8', linhas: ['Escopo: loja virtual + pedidos', 'Prazo: 6 semanas', 'Investimento em 3 etapas'] },
   { nome: 'Contrato assinado', tipo: 'PDF · assinado em 12/10', cor: '#E9C98A', linhas: ['Partes: JK Software e Loja Mar Azul', 'Suporte: 12 meses', 'Assinatura digital válida'] },
-  { nome: 'NF-e 4.182', tipo: 'XML + PDF', cor: '#A4E0EA', linhas: ['Serviço: desenvolvimento', 'Valor: R$ 4.800,00', 'Emitida em 14/10/2026'] },
-  { nome: 'Manual do sistema', tipo: 'PDF · 18 páginas', cor: '#C4F7F0', linhas: ['Como cadastrar produtos', 'Como acompanhar pedidos', 'Relatórios do mês'] },
+  { nome: 'NF-e 4.182', tipo: 'XML + PDF', cor: '#A4B9EA', linhas: ['Serviço: desenvolvimento', 'Valor: R$ 4.800,00', 'Emitida em 14/10/2026'] },
+  { nome: 'Manual do sistema', tipo: 'PDF · 18 páginas', cor: '#C4D9F7', linhas: ['Como cadastrar produtos', 'Como acompanhar pedidos', 'Relatórios do mês'] },
 ];
 
 export function DocFolder() {

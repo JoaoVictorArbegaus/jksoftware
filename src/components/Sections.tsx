@@ -43,9 +43,9 @@ export const duasVozes = (sans: string, serif: string): SplitNode[] => [
 
 export function Services() {
   return (
-    <section className="section mist mist-servicos" id="servicos" aria-labelledby="servicos-titulo">
+    <section className="section deep inv-servicos" id="servicos" aria-labelledby="servicos-titulo">
       {/* fundos variados por seção: pontos ondulando aqui, linhas nos diferenciais e depoimentos, relevo no processo e contato */}
-      <PatternWaves preset="silk" color="#1E5260" opacity={0.55} fade="edges" fadeSize={0.6} />
+      <PatternWaves preset="silk" color="#9DBCE8" opacity={0.32} fade="edges" fadeSize={0.6} />
       <div className="wrap">
         <SecHead eyebrow={servicos.eyebrow} id="servicos-titulo" title={duasVozes(servicos.tituloSans, servicos.tituloSerif)} intro={servicos.intro} />
         <Rail className="services" label="Serviços">
@@ -81,8 +81,8 @@ export function Services() {
 
 export function Perks() {
   return (
-    <section className="section deep deep-diferenciais" id="diferenciais" aria-labelledby="diferenciais-titulo">
-      <LineWaves color1="#9DE8DE" color2="#A7C9C2" color3="#5F8F93" brightness={0.12} speed={0.22} rotation={-30} innerLineCount={26} outerLineCount={30} mouseInfluence={1.4} />
+    <section className="section mist inv-diferenciais" id="diferenciais" aria-labelledby="diferenciais-titulo">
+      <LineWaves color1="#213978" color2="#3B5A9A" color3="#5F7093" brightness={0.16} speed={0.22} rotation={-30} innerLineCount={26} outerLineCount={30} mouseInfluence={1.4} />
       <div className="wrap">
         <SecHead
           eyebrow={diferenciais.eyebrow}
@@ -97,7 +97,7 @@ export function Perks() {
         <LiftList className="perks" role="list">
           {diferenciais.itens.map((d, i) => (
             <LiftItem key={d.titulo} i={i}>
-              <Glass tone="dark" tilt glow className="perk">
+              <Glass tone="deep" tilt glow className="perk">
                 <GlassIcon name={d.icone} tone={TONS[i % TONS.length]} size="lg" />
                 <div>
                   <h3>{d.titulo}</h3>
@@ -126,7 +126,7 @@ function Steps() {
       <LiftList as="ol" className="steps">
         {processo.passos.map((p, i) => (
           <LiftItem key={p.n} i={i}>
-            <Glass tone="light" tilt glow className="step">
+            <Glass tone="dark" tilt glow className="step">
               <span className="step-n" aria-hidden="true">
                 {p.n}
               </span>
@@ -143,7 +143,7 @@ function Steps() {
 
 export function Process() {
   return (
-    <section className="section mist mist-processo" id="processo" aria-labelledby="processo-titulo">
+    <section className="section deep inv-processo" id="processo" aria-labelledby="processo-titulo">
       <Topo seed={41} />
       <div className="wrap">
         <SecHead
@@ -161,8 +161,8 @@ export function Process() {
 
 export function Testimonials() {
   return (
-    <section className="section mist mist-depoimentos" id="depoimentos" aria-labelledby="depoimentos-titulo">
-      <PatternWaves preset="lines" color="#1E5260" opacity={0.5} fade="edges" fadeSize={0.6} />
+    <section className="section deep inv-depoimentos" id="depoimentos" aria-labelledby="depoimentos-titulo">
+      <PatternWaves preset="lines" color="#9DBCE8" opacity={0.3} fade="edges" fadeSize={0.6} />
       <div className="wrap">
         <SecHead
           eyebrow={depoimentos.eyebrow}
@@ -178,7 +178,7 @@ export function Testimonials() {
         <Rail className="quotes" label="Depoimentos">
           {depoimentos.itens.map((q, i) => (
             <LiftItem key={q.iniciais} i={i}>
-              <Glass tone="deep" tilt glow className="quote">
+              <Glass tone="dark" tilt glow className="quote">
                 <blockquote>
                   <p>{q.texto}</p>
                 </blockquote>
