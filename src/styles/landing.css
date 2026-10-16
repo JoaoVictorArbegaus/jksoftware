@@ -2835,11 +2835,11 @@ h2 { font-size: clamp(2.375rem, 1.5rem + 3vw, 4rem); line-height: 1.04; }
 @media (max-width: 767px) {
   .hero-link, .hero-provas { display: none; }
 }
-/* vitrine com altura fixa: a lista de pedidos e o registro da automação já reservam as 3 linhas finais
-   (antes cresciam de 1 para 3 e empurravam a janela e o topo inteiro) */
-.sc-feed { min-height: calc(3 * 36.8px + 2 * 6px); align-content: start; }
-.sc-log { min-height: calc(3 * 33.2px + 2 * 6px); align-content: start; }
-/* as três abas com a mesma altura (a de Sistemas, a mais alta, com as 3 linhas de pedidos) */
-.showcase__stage { min-height: 400px; }
-@media (max-width: 520px) { .showcase__stage { min-height: 382px; } }
-.sc-site { align-content: center; }
+
+/* ---------- Topo com altura fixa: a área da vitrine reserva a altura final do card ----------
+   O card cresce (pedidos chegando, troca de aba) para baixo dentro desse espaço, sem empurrar o topo nem
+   deslocar o texto. O card mantém o tamanho natural de cada aba. */
+.hero-visual { align-content: start; min-height: var(--vitrine-max, 0px); }
+.hero-visual .showcase { align-self: start; }
+@media (min-width: 960px) { .hero-visual { --vitrine-max: 640px; } }
+@media (max-width: 959px) { .hero-visual { --vitrine-max: 630px; } }
