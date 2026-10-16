@@ -294,3 +294,9 @@ O número do WhatsApp fica numa única constante (`WHATSAPP_NUMERO`) em `src/con
   - Verificado em 1440, 1024 e 390px com mouse, toque e teclado: console vazio, sem rolagem lateral.
 
 - **Rodada 11 (15/10/2026):** saíram a faixa curva arrastável (CurvedLoop) do começo de "Na prática" e o quadro "Status dos sistemas" (UptimeCard): não combinaram com a estética do site (decisão do dono). Pasta, agendamento e área do cliente ficaram em três colunas iguais no desktop.
+
+- **Rodada 12 (16/10/2026).**
+  - **Sem itálico:** a Fraunces itálica dos destaques não combinou. Testadas Manrope 800, Sora 700, Bricolage Grotesque 700, Fraunces 700 reta e Space Grotesk 700 no próprio topo e em Serviços; ficou a **Bricolage Grotesque** (700 nos destaques em menta e nos títulos dos cards, 800 nos números do processo e no título da vitrine): reta, compacta e com personalidade, contrasta com a Manrope do resto do título. Sora e Space Grotesk ficaram parecidas demais com a Manrope; a Fraunces reta manteve o ar clássico da serifa. A Fraunces fica só na marca "JK Software" e na miniatura da cantina. Texto corrido (inclusive depoimentos menores) continua na Manrope.
+  - **Títulos acima do texto:** títulos dos cards (Diferenciais, Processo, demos, menu do celular, perguntas do formulário) na Bricolage, 1,5 a 2,1rem; texto de apoio menor e mais apagado. O título já explica; o texto só complementa.
+  - **Vitrine do topo explicada antes:** "Veja funcionando" + nome do serviço grande + uma linha do que se vê em cada aba, e só depois a cena (antes a explicação vinha embaixo, depois do exemplo).
+  - **"Na prática" recolhida:** mostra só o painel de vendas (celular) ou painel + metas (desktop) e o botão "Ver todos os exemplos"; aberta, os outros quadros entram subindo e "Mostrar menos" volta ao começo da seção. No celular a seção caiu de ~5.000px para ~1.000px de rolagem.

@@ -1,4 +1,5 @@
-import type { ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
+import { useLenis } from 'lenis/react';
 import { exemplos, MENSAGENS, whatsapp } from '../content/site';
 import { Button } from './Button';
 import { Glass } from './Glass';
@@ -77,8 +78,21 @@ const SITES = [
 
 /** "Na prática": demos interativas de sistema, automação e site, numa grade de quadros de vidro. */
 export function Examples() {
+  // recolhida por padrão: só os destaques (1 no celular, 2 no desktop); o resto abre no botão
+  const [aberta, setAberta] = useState(false);
+  const secaoRef = useRef<HTMLElement>(null);
+  const lenis = useLenis();
+  const alternar = () => {
+    // ao recolher, volta ao começo da seção (o conteúdo de baixo some e a pessoa ficaria perdida no meio da página)
+    const el = secaoRef.current;
+    if (aberta && el) {
+      if (lenis) lenis.scrollTo(el, { offset: 0, immediate: false });
+      else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    setAberta((a) => !a);
+  };
   return (
-    <section className="section deep deep-exemplos" id="exemplos" aria-labelledby="exemplos-titulo">
+    <section ref={secaoRef} className={aberta ? 'section deep deep-exemplos is-open' : 'section deep deep-exemplos'} id="exemplos" aria-labelledby="exemplos-titulo">
       <div className="wrap">
         <SecHead
           eyebrow={exemplos.eyebrow}
@@ -90,7 +104,7 @@ export function Examples() {
             </>
           }
         />
-        <LiftList as="ul" className="demos" role="list">
+        <LiftList as="ul" className="demos" role="list" id="demos-lista">
           <LiftItem i={0} className="demos__painel">
             <Tile demo="painel" className="demo-tile--painel">
               <MetricCard />
@@ -144,6 +158,12 @@ export function Examples() {
             </Tile>
           </LiftItem>
         </LiftList>
+        <div className="demos__more">
+          <button type="button" className="demos__toggle" aria-expanded={aberta} aria-controls="demos-lista" onClick={alternar}>
+            {aberta ? exemplos.verMenos : exemplos.verMais}
+            <Icon name="chevron" />
+          </button>
+        </div>
         <Reveal as="div" className="demos__cta">
           <Button href={whatsapp(MENSAGENS.geral)} size="lg" className="btn-hero" data-wa="geral" external specular specularRadius={16}>
             <Icon name="whatsapp" className="ic-wa" />

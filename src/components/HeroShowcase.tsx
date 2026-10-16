@@ -264,19 +264,23 @@ export function HeroShowcase() {
           </button>
         ))}
       </div>
+      {/* primeiro o que é (nome grande + uma linha do que se vê), depois a cena */}
+      <div className="showcase__head">
+        <p className="showcase__eyebrow">{hero.vitrine.rotulo}</p>
+        {/* o nome do serviço troca com as letras viajando entre as palavras (DynamicText, controlado pela aba) */}
+        <p className="showcase__kicker">
+          <DynamicText words={NOMES} index={tab} />
+        </p>
+        <p key={tab} className="showcase__text">
+          {hero.vitrine.legendas[tab]}
+        </p>
+      </div>
       <div ref={ref} className="showcase__stage" id="sc-painel" role="tabpanel" aria-labelledby={`sc-tab-${TABS[tab].id}`}>
         <div key={tab} className="showcase__scene">
           {tab === 0 && <SceneSistemas live={live} />}
           {tab === 1 && <SceneSites live={live} />}
           {tab === 2 && <SceneAutomacoes live={live} />}
         </div>
-      </div>
-      <div className="showcase__foot">
-        {/* o nome do serviço troca com as letras viajando entre as palavras (DynamicText, controlado pela aba) */}
-        <p className="showcase__kicker">
-          <DynamicText words={NOMES} index={tab} />
-        </p>
-        <p className="showcase__text">{hero.card}</p>
       </div>
     </Glass>
   );

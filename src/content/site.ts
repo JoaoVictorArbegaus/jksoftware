@@ -77,6 +77,15 @@ export const hero = {
   lede: 'Sistemas, sites e automações para empresas que querem mais eficiência, agilidade e resultado.',
   cta: 'Vamos conversar',
   card: 'Soluções digitais que se adaptam à sua realidade e impulsionam o seu crescimento.',
+  /** Vitrine do topo: o que a pessoa está vendo em cada aba (aparece antes da cena, não depois). */
+  vitrine: {
+    rotulo: 'Veja funcionando',
+    legendas: [
+      'Um painel com os pedidos e o faturamento da sua empresa, atualizado sozinho.',
+      'Um site rápido e bonito, que aparece bem no Google e leva o cliente direto ao WhatsApp.',
+      'O sistema faz o trabalho repetido: do pedido no WhatsApp até o aviso ao cliente.',
+    ],
+  },
   fundo: { src: '/img/hero-montanhas-1672.webp', w: 1672, h: 941 },
 };
 
@@ -128,6 +137,8 @@ export const exemplos = {
   tituloSerif: 'mexa à vontade',
   intro: 'Pedaços de sistemas, sites e automações como os que entregamos, funcionando aqui mesmo. Arraste, puxe, toque.',
   nota: 'Dados e marcas fictícios, só para demonstração.',
+  verMais: 'Ver todos os exemplos',
+  verMenos: 'Mostrar menos',
   demos: {
     painel: { tag: 'Sistema', titulo: 'Painel de vendas', texto: 'Passe o dedo no gráfico para ver cada dia contra o período anterior.' },
     metas: { tag: 'Sistema', titulo: 'Metas da equipe', texto: 'Cada anel conta até o resultado; o que passa da meta dá outra volta.' },
