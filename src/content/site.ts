@@ -168,9 +168,9 @@ export const processo = {
   eyebrow: 'Processo',
   intro: 'Um processo simples, transparente e colaborativo, para que você tenha clareza em cada etapa.',
   passos: [
-    { n: '01', titulo: 'Entendemos seu objetivo', texto: 'Ouvimos suas ideias, analisamos suas necessidades e alinhamos os próximos passos.' },
-    { n: '02', titulo: 'Desenhamos a solução', texto: 'Planejamos a melhor estratégia para o seu projeto, com foco em usabilidade e resultado.' },
-    { n: '03', titulo: 'Desenvolvemos com você', texto: 'Construímos de forma transparente, com acompanhamento constante até a entrega.' },
+    { n: '01', titulo: 'Entendemos seu objetivo', texto: 'Ouvimos sua ideia e alinhamos os próximos passos.' },
+    { n: '02', titulo: 'Desenhamos a solução', texto: 'Planejamos a solução com foco em resultado.' },
+    { n: '03', titulo: 'Desenvolvemos com você', texto: 'Construímos junto com você, do início à entrega.' },
   ],
 };
 

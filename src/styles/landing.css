@@ -2740,3 +2740,49 @@ h2 { font-size: clamp(2.375rem, 1.5rem + 3vw, 4rem); line-height: 1.04; }
 .hero .btn-hero .ic-wa, .inv-exemplos .btn-hero .ic-wa { color: var(--azul-fundo); }
 .hero .btn-hero__arrow, .inv-exemplos .btn-hero__arrow { background: var(--abismo); color: var(--gelo); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2); }
 .hero .btn.btn-hero:hover .btn-hero__arrow, .inv-exemplos .btn.btn-hero:hover .btn-hero__arrow { background: #1D3270; }
+
+/* ---------- Botão principal em vidro de verdade (GlassSurface) ----------
+   Quase sem tinta: o fundo aparece através, desfocado e entortado nas bordas (filtro SVG no Chromium);
+   nos outros navegadores fica o vidro desfocado. Texto em tinta com halo claro para ler sobre qualquer trecho. */
+.hero .btn.btn-hero,
+.inv-exemplos .btn.btn-hero {
+  background: linear-gradient(180deg, rgba(255, 255, 255, .22), rgba(255, 255, 255, .06));
+  border: 1px solid rgba(255, 255, 255, .7);
+  -webkit-backdrop-filter: blur(6px) saturate(1.8) brightness(1.06);
+  backdrop-filter: blur(6px) saturate(1.8) brightness(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .95),
+    inset 0 -1px 0 rgba(255, 255, 255, .35),
+    inset 0 0 18px -6px rgba(255, 255, 255, .55),
+    0 14px 30px -18px rgba(10, 25, 67, .55);
+  text-shadow: 0 0 10px rgba(255, 255, 255, .9), 0 1px 0 rgba(255, 255, 255, .7);
+}
+.hero .btn.btn-hero.liquid-on,
+.inv-exemplos .btn.btn-hero.liquid-on { backdrop-filter: var(--liquid) blur(3px) saturate(1.8) brightness(1.06); }
+.hero .btn.btn-hero:hover,
+.inv-exemplos .btn.btn-hero:hover { background: linear-gradient(180deg, rgba(255, 255, 255, .34), rgba(255, 255, 255, .12)); border-color: #fff; }
+
+/* título da vitrine de volta à proporção de antes (a janela ficou 40px mais estreita) */
+.showcase__kicker { font-size: clamp(1.75rem, 1.25rem + 1.5vw, 2.25rem); }
+/* véu do topo mais leve embaixo, onde fica o botão: a montanha aparece e o vidro tem o que mostrar */
+.hero::before {
+  background:
+    linear-gradient(180deg, rgba(211, 218, 230, .6) 0%, rgba(211, 218, 230, 0) 24%),
+    linear-gradient(180deg, rgba(225, 231, 240, 0) 55%, rgba(225, 231, 240, .0) 100%),
+    linear-gradient(90deg, rgba(225, 231, 240, .82) 0%, rgba(225, 231, 240, .5) 46%, rgba(225, 231, 240, .08) 100%);
+}
+.hero .btn.btn-hero, .inv-exemplos .btn.btn-hero {
+  background: linear-gradient(180deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, 0) 60%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .95), inset 0 -1px 0 rgba(255, 255, 255, .4), 0 14px 30px -18px rgba(10, 25, 67, .55);
+}
+.hero .btn.btn-hero.liquid-on, .inv-exemplos .btn.btn-hero.liquid-on { backdrop-filter: var(--liquid) blur(1.5px) saturate(1.5); }
+
+/* ---------- Processo no celular: cards compactos (número ao lado do título, sem a seta embaixo) ---------- */
+@media (max-width: 639px) {
+  .step { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 14px; row-gap: 4px; align-items: center; padding: 16px 18px; }
+  .step-n { grid-row: 1; margin: 0; font-size: 2rem; line-height: 1; }
+  .step h3 { grid-row: 1; grid-column: 2; margin: 0; font-size: 1.25rem; }
+  .step p { grid-column: 1 / -1; font-size: .9375rem; line-height: 1.45; }
+  .step-arrow { display: none; }
+  .steps { gap: 12px; }
+}

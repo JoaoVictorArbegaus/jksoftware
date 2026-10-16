@@ -165,7 +165,7 @@ export function Examples() {
           </button>
         </div>
         <Reveal as="div" className="demos__cta">
-          <Button href={whatsapp(MENSAGENS.geral)} size="lg" className="btn-hero" data-wa="geral" external specular specularRadius={16}>
+          <Button href={whatsapp(MENSAGENS.geral)} size="lg" className="btn-hero" data-wa="geral" external specular specularRadius={16} liquid>
             <Icon name="whatsapp" className="ic-wa" />
             {exemplos.cta}
             <span className="btn-hero__arrow" aria-hidden="true">

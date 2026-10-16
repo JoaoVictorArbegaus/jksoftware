@@ -39,7 +39,7 @@ export function Hero() {
           </h1>
           <p className="lede reveal">{hero.lede}</p>
           <span className="reveal hero-cta">
-            <Button href={whatsapp(MENSAGENS.geral)} size="lg" className="btn-hero" data-wa="geral" external specular specularRadius={16}>
+            <Button href={whatsapp(MENSAGENS.geral)} size="lg" className="btn-hero" data-wa="geral" external specular specularRadius={16} liquid>
               <Icon name="whatsapp" className="ic-wa" />
               {hero.cta}
               <span className="btn-hero__arrow" aria-hidden="true">
