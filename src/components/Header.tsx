@@ -77,7 +77,7 @@ export function Header() {
         {/* desktop: pílula líquida que acompanha a seção ativa (GooeyNav) */}
         <nav className="nav-desktop" aria-label="Principal">
           {/* pílula de vidro menta translúcido com texto claro (a menta chapada destoava do cabeçalho) */}
-          <GooeyNav items={nav} activeIndex={activeIndex} onSelect={onGooey} color="#9DB0E8" pillOpacity={0.24} shadow={0.12} activeTextColor="#F2F6F3" />
+          <GooeyNav items={nav} activeIndex={activeIndex} onSelect={onGooey} color="#9DBCE8" pillOpacity={0.24} shadow={0.12} activeTextColor="#F2F6F3" />
         </nav>
         <Button href="#contato" variant="outline" className="header-cta" specular>
           {header.cta} <Icon name="arrow" />

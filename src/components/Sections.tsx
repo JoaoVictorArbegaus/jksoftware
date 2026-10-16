@@ -45,7 +45,7 @@ export function Services() {
   return (
     <section className="section mist mist-servicos" id="servicos" aria-labelledby="servicos-titulo">
       {/* fundos variados por seção: pontos ondulando aqui, linhas nos diferenciais e depoimentos, relevo no processo e contato */}
-      <PatternWaves preset="silk" color="#1B2363" opacity={0.55} fade="edges" fadeSize={0.6} />
+      <PatternWaves preset="silk" color="#1B2F63" opacity={0.55} fade="edges" fadeSize={0.6} />
       <div className="wrap">
         <SecHead eyebrow={servicos.eyebrow} id="servicos-titulo" title={duasVozes(servicos.tituloSans, servicos.tituloSerif)} intro={servicos.intro} />
         <Rail className="services" label="Serviços">
@@ -82,7 +82,7 @@ export function Services() {
 export function Perks() {
   return (
     <section className="section deep deep-diferenciais" id="diferenciais" aria-labelledby="diferenciais-titulo">
-      <LineWaves color1="#9DB0E8" color2="#A7B1C9" color3="#5F6793" brightness={0.12} speed={0.22} rotation={-30} innerLineCount={26} outerLineCount={30} mouseInfluence={1.4} />
+      <LineWaves color1="#9DBCE8" color2="#A7B6C9" color3="#5F7093" brightness={0.12} speed={0.22} rotation={-30} innerLineCount={26} outerLineCount={30} mouseInfluence={1.4} />
       <div className="wrap">
         <SecHead
           eyebrow={diferenciais.eyebrow}
@@ -162,7 +162,7 @@ export function Process() {
 export function Testimonials() {
   return (
     <section className="section mist mist-depoimentos" id="depoimentos" aria-labelledby="depoimentos-titulo">
-      <PatternWaves preset="lines" color="#1B2363" opacity={0.5} fade="edges" fadeSize={0.6} />
+      <PatternWaves preset="lines" color="#1B2F63" opacity={0.5} fade="edges" fadeSize={0.6} />
       <div className="wrap">
         <SecHead
           eyebrow={depoimentos.eyebrow}

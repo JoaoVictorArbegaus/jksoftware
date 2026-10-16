@@ -17,9 +17,9 @@ const OVER_S = 0.6;
 const MAX_LAPS = 3;
 
 const RINGS: Ring[] = [
-  { label: 'Vendas', color: '#9DB0E8', colorEnd: '#D6DFFB', size: 184, current: 96, target: 120, unit: 'pedidos' },
+  { label: 'Vendas', color: '#9DBCE8', colorEnd: '#D6E5FB', size: 184, current: 96, target: 120, unit: 'pedidos' },
   { label: 'Atendimentos', color: '#E9C98A', colorEnd: '#F6E2B8', size: 146, current: 52, target: 40, unit: 'clientes' },
-  { label: 'Entregas no prazo', color: '#5F6DC9', colorEnd: '#A4ADEA', size: 108, current: 28, target: 32, unit: 'entregas' },
+  { label: 'Entregas no prazo', color: '#5F7EC9', colorEnd: '#A4B9EA', size: 108, current: 28, target: 32, unit: 'entregas' },
 ];
 
 const ratioOf = (r: Ring) => (r.target > 0 ? Math.min(Math.max(r.current / r.target, 0), MAX_LAPS) : 0);
@@ -103,7 +103,7 @@ function RingSvg({ ring, index, inView, reduce, dimmed, onActive, countRef }: { 
             <stop offset="100%" stopColor={ring.colorEnd} />
           </linearGradient>
           <filter id={sid} x="-100%" y="-100%" width="300%" height="300%">
-            <feDropShadow dx="0" dy="-2.5" floodColor="#010316" floodOpacity="0.6" stdDeviation="2" />
+            <feDropShadow dx="0" dy="-2.5" floodColor="#010616" floodOpacity="0.6" stdDeviation="2" />
           </filter>
         </defs>
         {/* trilho: é o alvo do hover, então cada anel só reage sobre a própria faixa */}
