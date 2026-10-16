@@ -2574,3 +2574,22 @@ h1, h2, .h-sans, .h-serif-up { font-weight: 400; }
   .hero h1 { font-size: clamp(3rem, 1.1rem + 2.6vw, 3.5rem); }
   .hero h1 .h-sans, .hero h1 .h-serif { white-space: nowrap; }
 }
+
+/* ================= v15 (16/10/2026): destaque de volta ao verde-água, títulos maiores, diferenciais centrados =================
+   O dono preferiu o primeiro tom (o verde-água da marca) no destaque em negrito; no fundo claro, o petróleo escuro. */
+:root { --azul: var(--menta); --azul-fundo: #1E5260; }
+h2 { font-size: clamp(2.375rem, 1.5rem + 3vw, 4rem); line-height: 1.04; }
+@media (min-width: 1200px) {
+  .hero h1 { font-size: clamp(3.25rem, 1.2rem + 2.85vw, 3.75rem); }
+}
+.perk h3 { font-size: clamp(1.75rem, 1.4rem + 1.1vw, 2.25rem); }
+/* ícone e texto juntos, o conjunto no meio do card */
+.perk { justify-content: center; }
+.perk > div { flex: 0 1 auto; }
+/* com títulos maiores, o título leva mais da largura do cabeçalho de seção (o texto de apoio fica mais estreito) */
+@media (min-width: 960px) {
+  .sec-head { grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 48px; }
+}
+@media (min-width: 960px) and (max-width: 1199px) {
+  .sec-head { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+}
