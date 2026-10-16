@@ -528,6 +528,15 @@ export function GooeyNav({
           if (drop.absorbed >= 1) drops.splice(i, 1);
         }
       }
+      // sem gotas no ar, nada está em trânsito: só o item ativo fica com pílula. Sem isso, trocas rápidas (ou o
+      // menu apagando a pílula no meio de uma viagem) deixavam pedaços presos nos outros itens.
+      if (drops.length === 0) {
+        for (const [i, st] of pills) {
+          st.outgoing = 0;
+          if (i !== target) st.mass = 0;
+          else if (st.mass < 1 && target >= 0) st.mass = 1;
+        }
+      }
       // mola de cada pílula: cresce até a massa recebida, com um pouco de balanço
       const zeta = reduced ? 1 : 1 - 0.72 * clamp01(s.wobble);
       const omega = 26;
@@ -589,7 +598,10 @@ export function GooeyNav({
       // sem item ativo: a pílula encolhe até sumir
       if (i < 0) {
         target = -1;
-        for (const st of pills.values()) st.mass = 0;
+        for (const st of pills.values()) {
+          st.mass = 0;
+          st.outgoing = 0;
+        }
         drops.length = 0;
         if (reduced) settle(-1);
         else wake();

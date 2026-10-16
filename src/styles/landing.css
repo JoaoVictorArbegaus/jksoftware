@@ -2436,7 +2436,6 @@ h3 { font-weight: 700; letter-spacing: -.015em; line-height: 1.25; }
 /* ================= v12 (16/10/2026): destaques sem itálico, títulos maiores, vitrine explicada antes e "Na prática" recolhida =================
    A serifa itálica (Fraunces) não combinou: os destaques passam para a Bricolage Grotesque 700, reta e compacta,
    que contrasta com a Manrope do resto do título sem parecer outro site. A Fraunces fica só na marca e nas miniaturas. */
-:root { --display: "Bricolage Grotesque", "Manrope", ui-sans-serif, system-ui, sans-serif; }
 .h-serif,
 .h-serif-up em,
 .service-card h3 em,
@@ -2518,3 +2517,25 @@ h3 { font-weight: 700; letter-spacing: -.015em; line-height: 1.25; }
 @media (min-width: 960px) {
   .quotes > li:first-child .quote blockquote p { font-family: var(--display); font-weight: 600; letter-spacing: -.02em; }
 }
+
+/* ================= v13 (16/10/2026): títulos em Inter Tight e destaque pelo peso, não pela cor =================
+   Como na referência do dono ("AI Workforce. / Built for Freight Teams."): uma grotesca neutra e compacta, a
+   primeira parte firme (600) e o destaque leve (400) no mesmo tom, só um pouco mais suave. Sai o verde-água dos
+   destaques e sai a Bricolage. O menta continua só em ícones, rótulos e botões. */
+:root { --display: "Inter Tight", "Manrope", ui-sans-serif, system-ui, sans-serif; }
+h1, h2, .h-sans, .h-serif-up { font-family: var(--display); font-weight: 600; letter-spacing: -.035em; }
+.h-serif, .h-serif-up em, .service-card h3 em { font-family: var(--display); font-weight: 400; letter-spacing: -.03em; color: rgba(242, 246, 243, .76); }
+.mist .h-serif, .mist .h-serif-up em { color: rgba(14, 51, 65, .72); }
+/* card de serviço é vidro escuro, mesmo dentro da seção clara */
+.mist .service-card h3 em, .service-card h3 em { color: rgba(242, 246, 243, .78); }
+.service-card h3, .perk h3, .step h3, .demo-tile__head h3, .card-nav__label, .form-step__q { font-family: var(--display); font-weight: 600; letter-spacing: -.025em; }
+.showcase__kicker { font-weight: 600; color: var(--gelo); letter-spacing: -.035em; }
+.step-n { font-weight: 300; letter-spacing: -.04em; }
+.quote blockquote::before { font-weight: 700; }
+.quotes > li:first-child .quote blockquote p { font-weight: 500; letter-spacing: -.02em; }
+.sm__item[aria-current="true"] .sm__label { font-weight: 400; color: var(--gelo); }
+.sm__label { font-family: var(--display); }
+/* a Inter Tight já é compacta: espaçamento menos apertado que o da Manrope */
+h1, h2, .h-sans, .h-serif-up, .showcase__kicker { letter-spacing: -.025em; }
+.h-serif, .h-serif-up em, .service-card h3 em { letter-spacing: -.02em; }
+.service-card h3, .perk h3, .step h3, .demo-tile__head h3, .card-nav__label, .form-step__q { letter-spacing: -.018em; }
