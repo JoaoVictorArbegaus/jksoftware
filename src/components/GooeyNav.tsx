@@ -198,7 +198,7 @@ export function GooeyNav({
   activeIndex,
   onSelect,
   color = '#9DBCE8',
-  activeTextColor = '#081537',
+  activeTextColor = '#0A1943',
   hoverColor = 'rgba(242, 246, 243, 0.1)',
   pillOpacity = 1,
   shadow = 0.4,

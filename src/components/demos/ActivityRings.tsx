@@ -103,7 +103,7 @@ function RingSvg({ ring, index, inView, reduce, dimmed, onActive, countRef }: { 
             <stop offset="100%" stopColor={ring.colorEnd} />
           </linearGradient>
           <filter id={sid} x="-100%" y="-100%" width="300%" height="300%">
-            <feDropShadow dx="0" dy="-2.5" floodColor="#010616" floodOpacity="0.6" stdDeviation="2" />
+            <feDropShadow dx="0" dy="-2.5" floodColor="#02081B" floodOpacity="0.6" stdDeviation="2" />
           </filter>
         </defs>
         {/* trilho: é o alvo do hover, então cada anel só reage sobre a própria faixa */}
