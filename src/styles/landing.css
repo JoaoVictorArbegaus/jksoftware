@@ -2792,3 +2792,8 @@ h2 { font-size: clamp(2.375rem, 1.5rem + 3vw, 4rem); line-height: 1.04; }
 /* "Quero algo assim" fica sobre o trecho escuro da montanha: texto e ícone brancos */
 .inv-exemplos .btn.btn-hero { color: #fff; text-shadow: 0 1px 2px rgba(10, 25, 67, .45); }
 .inv-exemplos .btn-hero .ic-wa { color: #fff; }
+/* botões de vidro: só a seta, sem o quadrado (cor do texto do botão; desliza no hover) */
+.hero .btn-hero__arrow, .inv-exemplos .btn-hero__arrow,
+.hero .btn.btn-hero:hover .btn-hero__arrow, .inv-exemplos .btn.btn-hero:hover .btn-hero__arrow { width: auto; height: auto; background: none; box-shadow: none; color: inherit; }
+.hero .btn.btn-hero, .inv-exemplos .btn.btn-hero { padding-right: 24px; }
+.hero .btn-hero__arrow .ic-arrow, .inv-exemplos .btn-hero__arrow .ic-arrow { width: 20px; height: 20px; }
