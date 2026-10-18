@@ -1142,7 +1142,7 @@ h3 { font-weight: 700; letter-spacing: -.015em; line-height: 1.25; }
 /* ---------- Vidro líquido (React Bits GlassSurface): refração e aberração cromática nas bordas ----------
    O filtro do elemento (--liquid) entra antes do desfoque e do brightness do contrato. */
 .liquid__defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
-.glass-dark.liquid-on, .has-refraction .glass-dark.liquid-on { backdrop-filter: var(--liquid) blur(6px) saturate(1.2) brightness(.8); }
+.liquid-ok .glass-dark.liquid-on { backdrop-filter: var(--liquid) blur(6px) saturate(1.2) brightness(.8); }
 
 /* ---------- Texto digitado (kokonutui Typewriter) ---------- */
 .typewriter { display: inline-block; }
@@ -1262,8 +1262,8 @@ h3 { font-weight: 700; letter-spacing: -.015em; line-height: 1.25; }
    O vidro saiu do ::before para um elemento (.header-glass), que mede o próprio tamanho para o mapa de refração.
    No Chromium, a faixa de baixo da barra entorta o conteúdo que rola por trás. */
 .header-bar > .header-glass { pointer-events: none; }
-.header-bar > .header-glass.liquid-on { backdrop-filter: var(--liquid) blur(10px) saturate(1.3); }
-.site-header.is-scrolled .header-bar > .header-glass.liquid-on { backdrop-filter: var(--liquid) blur(18px) saturate(1.4) brightness(.78); }
+.liquid-ok .header-bar > .header-glass.liquid-on { backdrop-filter: var(--liquid) blur(10px) saturate(1.3); }
+.liquid-ok .site-header.is-scrolled .header-bar > .header-glass.liquid-on { backdrop-filter: var(--liquid) blur(18px) saturate(1.4) brightness(.78); }
 
 /* ================= v5 (15/10/2026): cabeçalho em pílula, monograma, botão translúcido, Processo e Depoimentos distintos ================= */
 
@@ -2757,8 +2757,8 @@ h2 { font-size: clamp(2.375rem, 1.5rem + 3vw, 4rem); line-height: 1.04; }
     0 14px 30px -18px rgba(10, 25, 67, .55);
   text-shadow: 0 0 10px rgba(255, 255, 255, .9), 0 1px 0 rgba(255, 255, 255, .7);
 }
-.hero .btn.btn-hero.liquid-on,
-.inv-exemplos .btn.btn-hero.liquid-on { backdrop-filter: var(--liquid) blur(3px) saturate(1.8) brightness(1.06); }
+.liquid-ok .hero .btn.btn-hero.liquid-on,
+.liquid-ok .inv-exemplos .btn.btn-hero.liquid-on { backdrop-filter: var(--liquid) blur(3px) saturate(1.8) brightness(1.06); }
 .hero .btn.btn-hero:hover,
 .inv-exemplos .btn.btn-hero:hover { background: linear-gradient(180deg, rgba(255, 255, 255, .34), rgba(255, 255, 255, .12)); border-color: #fff; }
 
@@ -2775,7 +2775,7 @@ h2 { font-size: clamp(2.375rem, 1.5rem + 3vw, 4rem); line-height: 1.04; }
   background: linear-gradient(180deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, 0) 60%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .95), inset 0 -1px 0 rgba(255, 255, 255, .4), 0 14px 30px -18px rgba(10, 25, 67, .55);
 }
-.hero .btn.btn-hero.liquid-on, .inv-exemplos .btn.btn-hero.liquid-on { backdrop-filter: var(--liquid) blur(1.5px) saturate(1.5); }
+.liquid-ok .hero .btn.btn-hero.liquid-on, .liquid-ok .inv-exemplos .btn.btn-hero.liquid-on { backdrop-filter: var(--liquid) blur(1.5px) saturate(1.5); }
 
 /* ---------- Processo no celular: cards compactos (número ao lado do título, sem a seta embaixo) ---------- */
 @media (max-width: 639px) {
@@ -2843,3 +2843,25 @@ h2 { font-size: clamp(2.375rem, 1.5rem + 3vw, 4rem); line-height: 1.04; }
 .hero-visual .showcase { align-self: start; }
 @media (min-width: 960px) { .hero-visual { --vitrine-max: 640px; } }
 @media (max-width: 959px) { .hero-visual { --vitrine-max: 630px; } }
+
+/* ---------- Celular: a vitrine não corta mais o texto ----------
+   O nome do serviço (DynamicText, uma linha só) era maior que a janela e alargava a coluna; com overflow hidden
+   na vitrine, título e legenda saíam cortados à direita. */
+.showcase__head { grid-template-columns: minmax(0, 1fr); min-width: 0; }
+@media (max-width: 520px) {
+  .showcase__kicker { font-size: min(1.75rem, 6.2vw); }
+  .showcase__tabs { gap: 2px; padding: 8px 8px 0; }
+  .showcase__tab { gap: 5px; padding: 0 4px; font-size: .78rem; }
+}
+
+/* ---------- Celular: cards dos diferenciais só com o título (o título já explica) ---------- */
+@media (max-width: 767px) {
+  .perk p { display: none; }
+  .perk { align-items: center; padding: 18px 20px; }
+}
+
+/* Carrossel do celular: cada card de vidro na própria camada. No Chrome do celular, vidro (backdrop-filter) dentro
+   de uma trilha com rolagem lateral às vezes deixava parte do card sem repintar (texto pela metade). */
+@media (max-width: 959px) {
+  .rail-track > li > .glass { transform: translateZ(0); backface-visibility: hidden; }
+}
