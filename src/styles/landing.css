@@ -2865,3 +2865,14 @@ h2 { font-size: clamp(2.375rem, 1.5rem + 3vw, 4rem); line-height: 1.04; }
 @media (max-width: 959px) {
   .rail-track > li > .glass { transform: translateZ(0); backface-visibility: hidden; }
 }
+
+/* Botão de vidro líquido: entra só deslizando, sem opacidade. Opacidade < 1 num ancestral desliga o
+   backdrop-filter no Chrome, e o botão aparecia sem o vidro durante o fade de entrada (~1 s). */
+.js .reveal:has(.btn-liquid) { opacity: 1; }
+
+/* ---------- Diferenciais no celular: card mais alto (o ícone cabe inteiro) e título centralizado ---------- */
+@media (max-width: 767px) {
+  .perk { min-height: 128px; padding: 22px 20px; gap: 18px; }
+  .perk > div { flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; }
+  .perk h3 { margin: 0; }
+}
