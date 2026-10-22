@@ -1,11 +1,12 @@
 /**
  * Fundo de padrão ondulado: uma grade de pontos (ou cruzes, ou linhas) desenha uma superfície que ondula,
- * com luz e brilho; o cursor deixa um rastro de ondulação e um clique solta uma onda.
+ * com luz e brilho, sozinha.
  *
  * Adaptado de React Bits — PatternWaves (https://reactbits.dev), licença MIT.
  * Mudanças: WebGL2 direto em vez da biblioteca `ogl` (sem dependência nova); TypeScript; sem o padrão de
- * caracteres (atlas de letras); camada decorativa da seção com cores da marca; pausa fora da tela; parado e
- * sem ondulação do cursor com movimento reduzido.
+ * caracteres (atlas de letras); camada decorativa da seção com cores da marca; pausa fora da tela; parado com
+ * movimento reduzido. Sem a interação com o mouse (o rastro de ondulação e a onda do clique, que eram uma segunda
+ * simulação na GPU), resolução até 1,5x e ~30 quadros por segundo, para não pesar.
  */
 import { useEffect, useRef } from 'react';
 
@@ -22,9 +23,9 @@ const PATTERNS = { dot: 0, plus: 2, line: 3 } as const;
 const WAVES = { silk: 0, swell: 1, ripple: 2 } as const;
 const FADES = { none: 0, edges: 1, center: 2, bottom: 3, top: 4 } as const;
 const WAVE_UNIT = 520;
-const RIPPLE_CELL = 8;
-const RIPPLE_RATE = 60;
-const PIXEL_BUDGET = 4.5e6;
+const PIXEL_BUDGET = 3e6;
+/** A superfície ondula devagar: ~30 quadros por segundo bastam. */
+const FRAME_MS = 33;
 const INTRO_SECONDS = 2;
 
 const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max);
@@ -60,8 +61,6 @@ uniform float uOpacity;
 uniform int uFade;
 uniform float uFadeSize;
 uniform float uAppear;
-uniform sampler2D tRipple;
-uniform float uRipple;
 out vec4 fragColor;
 const float FOLDS = 5.5;
 
@@ -114,9 +113,7 @@ float surface(vec2 p, float t) {
   return sin((r + bend) * 9.0 - t * 1.8) * (0.45 + 0.55 * exp(-(r - 0.6) * 0.8));
 }
 float heightAt(vec2 css) {
-  float h = surface((css - 0.5 * uSize) / uUnit, uTime) * uAmp;
-  if (uRipple > 0.0) h += texture(tRipple, css / uSize).r * uRipple;
-  return h;
+  return surface((css - 0.5 * uSize) / uUnit, uTime) * uAmp;
 }
 void main() {
   vec2 cell = floor(gl_FragCoord.xy);
@@ -148,34 +145,6 @@ void main() {
   float alpha = uOpacity * fade * appear * (0.22 + 0.78 * level);
   float lift = clamp(h * uDepth * 0.42, -0.48, 0.48);
   fragColor = vec4(level, alpha, emphasis, lift + 0.5);
-}
-`;
-
-const RIPPLE_FRAGMENT = `#version 300 es
-precision highp float;
-uniform sampler2D tState;
-uniform vec2 uTexel;
-uniform vec2 uSize;
-uniform vec2 uFrom;
-uniform vec2 uTo;
-uniform float uRadius;
-uniform float uImpulse;
-uniform float uDamping;
-out vec4 fragColor;
-void main() {
-  vec2 uv = gl_FragCoord.xy * uTexel;
-  vec2 state = texture(tState, uv).rg;
-  float left = texture(tState, uv - vec2(uTexel.x, 0.0)).r;
-  float right = texture(tState, uv + vec2(uTexel.x, 0.0)).r;
-  float below = texture(tState, uv - vec2(0.0, uTexel.y)).r;
-  float above = texture(tState, uv + vec2(0.0, uTexel.y)).r;
-  float next = ((left + right + below + above) * 0.5 - state.g) * uDamping;
-  vec2 p = uv * uSize;
-  vec2 segment = uTo - uFrom;
-  float along = clamp(dot(p - uFrom, segment) / max(dot(segment, segment), 1e-4), 0.0, 1.0);
-  float d = length(p - uFrom - segment * along) / uRadius;
-  next -= uImpulse * exp(-d * d * 2.0);
-  fragColor = vec4(next, state.r, 0.0, 1.0);
 }
 `;
 
@@ -260,12 +229,10 @@ type Props = {
   fade?: keyof typeof FADES;
   fadeSize?: number;
   speed?: number;
-  cursorSize?: number;
-  cursorStrength?: number;
   className?: string;
 };
 
-export function PatternWaves({ preset = 'silk', color = '#213978', opacity = 1, fade = 'edges', fadeSize = 0.5, speed, cursorSize = 50, cursorStrength = 0.6, className }: Props) {
+export function PatternWaves({ preset = 'silk', color = '#213978', opacity = 1, fade = 'edges', fadeSize = 0.5, speed, className }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -275,7 +242,6 @@ export function PatternWaves({ preset = 'silk', color = '#213978', opacity = 1, 
     const s = { ...PRESETS[preset], ...(speed !== undefined ? { speed } : {}) };
     const rgba = hexToRgba(color);
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const interactive = !reduce;
 
     // ---------- helpers de WebGL (o que o `ogl` fazia) ----------
     const program = (frag: string) => {
@@ -293,9 +259,8 @@ export function PatternWaves({ preset = 'silk', color = '#213978', opacity = 1, 
       return gl.getProgramParameter(p, gl.LINK_STATUS) ? p : null;
     };
     const fieldProg = program(FIELD_FRAGMENT);
-    const rippleProg = program(RIPPLE_FRAGMENT);
     const markProg = program(MARK_FRAGMENT);
-    if (!fieldProg || !rippleProg || !markProg) return;
+    if (!fieldProg || !markProg) return;
     const loc = (p: WebGLProgram) => {
       const cache = new Map<string, WebGLUniformLocation | null>();
       return (n: string) => {
@@ -304,7 +269,6 @@ export function PatternWaves({ preset = 'silk', color = '#213978', opacity = 1, 
       };
     };
     const F = loc(fieldProg);
-    const R = loc(rippleProg);
     const M = loc(markProg);
 
     const vao = gl.createVertexArray();
@@ -315,20 +279,18 @@ export function PatternWaves({ preset = 'silk', color = '#213978', opacity = 1, 
     gl.enableVertexAttribArray(0);
     gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 
-    const makeTexture = (w: number, h: number, half: boolean) => {
+    const makeTexture = (w: number, h: number) => {
       const tex = gl.createTexture()!;
       gl.bindTexture(gl.TEXTURE_2D, tex);
-      const filter = half ? gl.LINEAR : gl.NEAREST;
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      if (half) gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, w, h, 0, gl.RGBA, gl.HALF_FLOAT, null);
-      else gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
       return tex;
     };
-    const makeTarget = (w: number, h: number, half = false): Target => {
-      const tex = makeTexture(w, h, half);
+    const makeTarget = (w: number, h: number): Target => {
+      const tex = makeTexture(w, h);
       const fb = gl.createFramebuffer()!;
       gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
       gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
@@ -339,7 +301,6 @@ export function PatternWaves({ preset = 'silk', color = '#213978', opacity = 1, 
       gl.deleteFramebuffer(t.fb);
       gl.deleteTexture(t.tex);
     };
-    const blank = makeTexture(1, 1, false);
     const draw = (prog: WebGLProgram, target: Target | null, clear = true) => {
       gl.bindFramebuffer(gl.FRAMEBUFFER, target ? target.fb : null);
       gl.viewport(0, 0, target ? target.width : canvas.width, target ? target.height : canvas.height);
@@ -356,9 +317,7 @@ export function PatternWaves({ preset = 'silk', color = '#213978', opacity = 1, 
       gl.bindTexture(gl.TEXTURE_2D, tex);
     };
 
-    const floatTargets = !!gl.getExtension('EXT_color_buffer_float');
     let fieldTarget = makeTarget(1, 1);
-    let ripple: { width: number; height: number; read: Target; write: Target } | null = null;
     let width = 1;
     let height = 1;
     let raf = 0;
@@ -367,76 +326,24 @@ export function PatternWaves({ preset = 'silk', color = '#213978', opacity = 1, 
     let intro = 0;
     let visible = true;
     let alive = true;
-    let rippleUntil = 0;
-    let rippleLive = false;
-    let rippleClock = 0;
-    const pointer = { x: 0, y: 0, inside: false, placed: false, lastX: 0, lastY: 0, burst: 0 };
 
-    const buildRipple = () => {
-      if (!floatTargets) return;
-      const w = clamp(Math.ceil(width / RIPPLE_CELL), 4, 512);
-      const h = clamp(Math.ceil(height / RIPPLE_CELL), 4, 512);
-      if (ripple && ripple.width === w && ripple.height === h) return;
-      if (ripple) {
-        dispose(ripple.read);
-        dispose(ripple.write);
-      }
-      ripple = { width: w, height: h, read: makeTarget(w, h, true), write: makeTarget(w, h, true) };
-      rippleLive = false;
-    };
-    const clearRipple = () => {
-      if (!ripple) return;
-      for (const t of [ripple.read, ripple.write]) {
-        gl.bindFramebuffer(gl.FRAMEBUFFER, t.fb);
-        gl.viewport(0, 0, t.width, t.height);
-        gl.clearColor(0, 0, 0, 0);
-        gl.clear(gl.COLOR_BUFFER_BIT);
-      }
-      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    };
     const resize = () => {
       width = Math.max(1, canvas.clientWidth);
       height = Math.max(1, canvas.clientHeight);
-      const dpr = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(PIXEL_BUDGET / (width * height)));
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(PIXEL_BUDGET / (width * height)));
       canvas.width = Math.max(1, Math.round(width * dpr));
       canvas.height = Math.max(1, Math.round(height * dpr));
-      buildRipple();
       start();
-    };
-
-    const stepRipple = (dt: number) => {
-      if (!ripple) return;
-      rippleClock = Math.min(rippleClock + dt * RIPPLE_RATE, 4);
-      const strength = clamp(cursorStrength, 0, 1);
-      const moved = Math.hypot(pointer.x - pointer.lastX, pointer.y - pointer.lastY);
-      let impulse = (pointer.inside ? Math.min(moved / 14, 1) * 0.35 * strength : 0) + pointer.burst * strength;
-      pointer.burst = 0;
-      gl.useProgram(rippleProg);
-      gl.uniform2f(R('uTexel'), 1 / ripple.width, 1 / ripple.height);
-      gl.uniform2f(R('uSize'), width, height);
-      gl.uniform2f(R('uFrom'), pointer.lastX, height - pointer.lastY);
-      gl.uniform2f(R('uTo'), pointer.x, height - pointer.y);
-      gl.uniform1f(R('uRadius'), clamp(cursorSize, 8, 400));
-      gl.uniform1f(R('uDamping'), 0.975);
-      gl.uniform1i(R('tState'), 0);
-      while (rippleClock >= 1) {
-        rippleClock -= 1;
-        bindTex(0, ripple.read.tex);
-        gl.uniform1f(R('uImpulse'), impulse);
-        draw(rippleProg, ripple.write, false);
-        const next = ripple.read;
-        ripple.read = ripple.write;
-        ripple.write = next;
-        impulse = 0;
-      }
-      pointer.lastX = pointer.x;
-      pointer.lastY = pointer.y;
     };
 
     const frame = (now: number) => {
       raf = 0;
       if (!alive) return;
-      const dt = Math.min(0.05, Math.max(1 / 240, (now - last) / 1000));
+      if (last && intro >= 1 && now - last < FRAME_MS - 4) {
+        if (visible && !document.hidden) raf = requestAnimationFrame(frame);
+        return;
+      }
+      const dt = last ? Math.min(0.1, Math.max(1 / 240, (now - last) / 1000)) : 1 / 60;
       last = now;
       const moving = !reduce && s.speed !== 0;
       if (moving) time += dt * s.speed;
@@ -444,22 +351,6 @@ export function PatternWaves({ preset = 'silk', color = '#213978', opacity = 1, 
       const appear = 1 - Math.pow(1 - clamp(intro / 0.75, 0, 1), 3);
       const rise = clamp((intro - 0.1) / 0.9, 0, 1);
       const amp = rise * rise * (3 - 2 * rise);
-
-      const rippling = interactive && !!ripple && cursorStrength > 0;
-      if (rippling && pointer.inside && !pointer.placed) {
-        pointer.lastX = pointer.x;
-        pointer.lastY = pointer.y;
-        pointer.placed = true;
-      }
-      if (rippling && (pointer.inside || pointer.burst > 0)) rippleUntil = now + 5000;
-      const rippleActive = rippling && now < rippleUntil;
-      if (rippleActive) {
-        stepRipple(dt);
-        rippleLive = true;
-      } else if (rippleLive) {
-        clearRipple();
-        rippleLive = false;
-      }
 
       const patternIndex = PATTERNS[s.pattern];
       const cw = canvas.width;
@@ -498,9 +389,6 @@ export function PatternWaves({ preset = 'silk', color = '#213978', opacity = 1, 
       gl.uniform1i(F('uFade'), FADES[fade]);
       gl.uniform1f(F('uFadeSize'), clamp(fadeSize, 0.05, 1));
       gl.uniform1f(F('uAppear'), appear);
-      gl.uniform1i(F('tRipple'), 0);
-      bindTex(0, ripple && rippleLive ? ripple.read.tex : blank);
-      gl.uniform1f(F('uRipple'), rippleLive ? 0.32 : 0);
       draw(fieldProg, fieldTarget);
 
       gl.useProgram(markProg);
@@ -518,53 +406,17 @@ export function PatternWaves({ preset = 'silk', color = '#213978', opacity = 1, 
       gl.uniform3f(M('uAccent'), rgba[0] + (tint - rgba[0]) * blend, rgba[1] + (tint - rgba[1]) * blend, rgba[2] + (tint - rgba[2]) * blend);
       draw(markProg, null);
 
-      if (visible && !document.hidden && (moving || intro < 1 || rippleActive)) raf = requestAnimationFrame(frame);
+      if (visible && !document.hidden && (moving || intro < 1)) raf = requestAnimationFrame(frame);
     };
     const start = () => {
       if (raf || !visible || !alive) return;
-      last = performance.now();
+      last = 0;
       raf = requestAnimationFrame(frame);
     };
 
-    const locate = (e: PointerEvent) => {
-      const r = canvas.getBoundingClientRect();
-      const x = e.clientX - r.left;
-      const y = e.clientY - r.top;
-      return { x, y, inside: x >= 0 && y >= 0 && x <= r.width && y <= r.height };
-    };
-    const onMove = (e: PointerEvent) => {
-      const p = locate(e);
-      pointer.x = p.x;
-      pointer.y = p.y;
-      if (p.inside !== pointer.inside) pointer.placed = false;
-      pointer.inside = p.inside && e.pointerType === 'mouse';
-      if (pointer.inside) start();
-    };
-    const onDown = (e: PointerEvent) => {
-      const p = locate(e);
-      if (!p.inside || (e.target as Element).closest?.('a, button, input, select, textarea, label')) return;
-      pointer.x = p.x;
-      pointer.y = p.y;
-      if (!pointer.inside) {
-        pointer.lastX = p.x;
-        pointer.lastY = p.y;
-      }
-      pointer.burst = 1.2;
-      start();
-    };
-    const onLeave = () => {
-      pointer.inside = false;
-      pointer.placed = false;
-      start();
-    };
     const onVis = () => {
       if (!document.hidden) start();
     };
-    if (interactive) {
-      window.addEventListener('pointermove', onMove, { passive: true });
-      window.addEventListener('pointerdown', onDown, { passive: true });
-      window.addEventListener('blur', onLeave);
-    }
     document.addEventListener('visibilitychange', onVis);
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
@@ -581,19 +433,11 @@ export function PatternWaves({ preset = 'silk', color = '#213978', opacity = 1, 
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
-      window.removeEventListener('pointermove', onMove);
-      window.removeEventListener('pointerdown', onDown);
-      window.removeEventListener('blur', onLeave);
       document.removeEventListener('visibilitychange', onVis);
-      if (ripple) {
-        dispose(ripple.read);
-        dispose(ripple.write);
-      }
       dispose(fieldTarget);
-      gl.deleteTexture(blank);
       gl.deleteBuffer(buffer);
       gl.deleteVertexArray(vao);
-      [fieldProg, rippleProg, markProg].forEach((p) => gl.deleteProgram(p));
+      [fieldProg, markProg].forEach((p) => gl.deleteProgram(p));
       // sem loseContext: no StrictMode o React remonta e reaproveitaria um contexto perdido
     };
     // os parâmetros são fixos por seção

@@ -1,10 +1,10 @@
 /**
- * Fundo de linhas onduladas: feixes de linhas que se deformam devagar e se curvam perto do cursor.
+ * Fundo de linhas onduladas: feixes de linhas que se deformam devagar, sozinhos.
  *
  * Adaptado de React Bits — LineWaves (https://reactbits.dev), licença MIT.
  * Mudanças: WebGL direto em vez da biblioteca `ogl` (sem dependência nova); TypeScript; camada decorativa
- * dentro da seção (cursor lido da janela, não do canvas, que fica atrás do conteúdo); pausa fora da tela e
- * com a aba oculta; um quadro parado com movimento reduzido; cores da marca.
+ * dentro da seção; pausa fora da tela e com a aba oculta; um quadro parado com movimento reduzido; cores da marca.
+ * Sem a interação com o mouse, resolução até 1x (as linhas são suaves) e ~30 quadros por segundo, para não pesar.
  */
 import { useEffect, useRef } from 'react';
 
@@ -28,11 +28,8 @@ uniform float uBrightness;
 uniform vec3 uColor1;
 uniform vec3 uColor2;
 uniform vec3 uColor3;
-uniform vec2 uMouse;
-uniform float uMouseInfluence;
-uniform float uEnableMouse;
 
-#DDE3FFine HALF_PI 1.5707963
+#define HALF_PI 1.5707963
 
 float hashF(float n) { return fract(sin(n * 127.1) * 43758.5453123); }
 float smoothNoise(float x) {
@@ -60,16 +57,9 @@ void main() {
   float halfT = uTime * uSpeed * 0.5;
   float fullT = uTime * uSpeed;
 
-  float mouseWarp = 0.0;
-  if (uEnableMouse > 0.5) {
-    vec2 mPos = rotate2D(uMouse * 2.0 - 1.0, uRotation);
-    float mDist = length(coords - mPos);
-    mouseWarp = uMouseInfluence * exp(-mDist * mDist * 4.0);
-  }
-
-  float warpAx = coords.x + displaceA(coords.y, halfT) * uWarpIntensity + mouseWarp;
+  float warpAx = coords.x + displaceA(coords.y, halfT) * uWarpIntensity;
   float warpAy = coords.y - displaceA(coords.x * cos(fullT) * 1.235, halfT) * uWarpIntensity;
-  float warpBx = coords.x + displaceB(coords.y, halfT) * uWarpIntensity + mouseWarp;
+  float warpBx = coords.x + displaceB(coords.y, halfT) * uWarpIntensity;
   float warpBy = coords.y - displaceB(coords.x * sin(fullT) * 1.235, halfT) * uWarpIntensity;
   vec2 fieldA = vec2(warpAx, warpAy);
   vec2 fieldB = vec2(warpBx, warpBy);
@@ -114,7 +104,6 @@ type Props = {
   color1?: string;
   color2?: string;
   color3?: string;
-  mouseInfluence?: number;
   className?: string;
 };
 
@@ -130,7 +119,6 @@ export function LineWaves({
   color1 = '#ffffff',
   color2 = '#ffffff',
   color3 = '#ffffff',
-  mouseInfluence = 2,
   className,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -160,7 +148,6 @@ export function LineWaves({
     const u = (n: string) => gl.getUniformLocation(program, n);
     const uTime = u('uTime');
     const uRes = u('uResolution');
-    const uMouse = u('uMouse');
     gl.uniform1f(u('uSpeed'), speed);
     gl.uniform1f(u('uInnerLines'), innerLineCount);
     gl.uniform1f(u('uOuterLines'), outerLineCount);
@@ -172,20 +159,18 @@ export function LineWaves({
     gl.uniform3fv(u('uColor1'), hexToVec3(color1));
     gl.uniform3fv(u('uColor2'), hexToVec3(color2));
     gl.uniform3fv(u('uColor3'), hexToVec3(color3));
-    gl.uniform1f(u('uMouseInfluence'), mouseInfluence);
-    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    gl.uniform1f(u('uEnableMouse'), fine && !reduce ? 1 : 0);
     gl.clearColor(0, 0, 0, 0);
 
-    const mouse = [0.5, 0.5];
-    const target = [0.5, 0.5];
+    /** As linhas se deformam devagar: ~30 quadros por segundo bastam. */
+    const FRAME_MS = 33;
     let raf = 0;
+    let last = 0;
     let visible = true;
     let t0 = performance.now();
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1);
       canvas.width = Math.max(1, Math.round(canvas.clientWidth * dpr));
       canvas.height = Math.max(1, Math.round(canvas.clientHeight * dpr));
       gl.viewport(0, 0, canvas.width, canvas.height);
@@ -193,29 +178,21 @@ export function LineWaves({
     };
     const draw = (now: number) => {
       gl.uniform1f(uTime, (now - t0) * 0.001);
-      mouse[0] += 0.05 * (target[0] - mouse[0]);
-      mouse[1] += 0.05 * (target[1] - mouse[1]);
-      gl.uniform2f(uMouse, mouse[0], mouse[1]);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
     const frame = (now: number) => {
       raf = 0;
       if (!visible || document.hidden) return;
-      draw(now);
+      if (now - last >= FRAME_MS - 4) {
+        last = now;
+        draw(now);
+      }
       raf = requestAnimationFrame(frame);
     };
     const start = () => {
       if (!raf && visible && !reduce) raf = requestAnimationFrame(frame);
     };
-    const onMove = (e: PointerEvent) => {
-      if (e.pointerType !== 'mouse') return;
-      const r = canvas.getBoundingClientRect();
-      const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
-      target[0] = inside ? (e.clientX - r.left) / r.width : 0.5;
-      target[1] = inside ? 1 - (e.clientY - r.top) / r.height : 0.5;
-    };
-
     resize();
     t0 = performance.now() - 4000; // começa já com as linhas em movimento, não no padrão inicial
     draw(performance.now());
@@ -232,7 +209,6 @@ export function LineWaves({
     io.observe(canvas);
     const onVis = () => start();
     document.addEventListener('visibilitychange', onVis);
-    if (fine && !reduce) window.addEventListener('pointermove', onMove, { passive: true });
     start();
 
     return () => {
@@ -240,7 +216,6 @@ export function LineWaves({
       ro.disconnect();
       io.disconnect();
       document.removeEventListener('visibilitychange', onVis);
-      window.removeEventListener('pointermove', onMove);
       // sem loseContext: no StrictMode o React remonta e reaproveitaria um contexto perdido
       gl.deleteBuffer(buffer);
       gl.deleteProgram(program);

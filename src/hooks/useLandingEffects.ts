@@ -41,8 +41,18 @@ export function useLandingEffects() {
     const MAX = 5; // graus
     let last: HTMLElement | null = null;
     const clear = (el: HTMLElement) => ['--mx', '--my', '--rx', '--ry', '--edge-proximity', '--cursor-angle'].forEach((v) => el.style.removeProperty(v));
+    // o mouse dispara vários pointermove por quadro: guarda o último e aplica uma vez por quadro
+    let pending: PointerEvent | null = null;
+    let frame = 0;
     const onPointer = (e: PointerEvent) => {
       if (e.pointerType !== 'mouse') return;
+      pending = e;
+      if (!frame) frame = requestAnimationFrame(apply);
+    };
+    const apply = () => {
+      frame = 0;
+      const e = pending;
+      if (!e) return;
       const g = (e.target as Element).closest?.<HTMLElement>('.glass, .btn') ?? null;
       if (last && last !== g) clear(last);
       last = g;
@@ -64,12 +74,14 @@ export function useLandingEffects() {
       }
     };
     const onLeave = () => {
+      pending = null;
       if (last) clear(last);
       last = null;
     };
     document.addEventListener('pointermove', onPointer, { passive: true });
     document.documentElement.addEventListener('pointerleave', onLeave);
     return () => {
+      cancelAnimationFrame(frame);
       document.removeEventListener('pointermove', onPointer);
       document.documentElement.removeEventListener('pointerleave', onLeave);
       doc.classList.remove('has-refraction');

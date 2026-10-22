@@ -82,7 +82,7 @@ export function Services() {
 export function Perks() {
   return (
     <section className="section mist inv-diferenciais" id="diferenciais" aria-labelledby="diferenciais-titulo">
-      <LineWaves color1="#213978" color2="#3B5A9A" color3="#5F7093" brightness={0.16} speed={0.22} rotation={-30} innerLineCount={26} outerLineCount={30} mouseInfluence={1.4} />
+      <LineWaves color1="#213978" color2="#3B5A9A" color3="#5F7093" brightness={0.16} speed={0.22} rotation={-30} innerLineCount={26} outerLineCount={30} />
       <div className="wrap">
         <SecHead
           eyebrow={diferenciais.eyebrow}

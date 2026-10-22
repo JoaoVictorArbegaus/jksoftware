@@ -1,29 +1,18 @@
 /**
- * Fundo topográfico: curvas de nível que derivam devagar; um morro segue o cursor e um clique solta uma onda.
+ * Fundo topográfico: curvas de nível que derivam devagar, sozinhas.
  *
  * Adaptado de kokonutui — Topo Background (https://kokonutui.com), por @dorianbaffier, licença MIT.
- * Mudanças: vira uma camada decorativa dentro da seção (os eventos do cursor vêm da própria seção),
- * sem Tailwind nem `cn`, sem as cotas numéricas, cor vinda do CSS (`color`) e desenho estático com
- * movimento reduzido.
+ * Mudanças: vira uma camada decorativa dentro da seção, sem Tailwind nem `cn`, sem as cotas numéricas, cor vinda
+ * do CSS (`color`), DPR até 1,5 e desenho estático com movimento reduzido. Sem a interação com o mouse (o morro
+ * que seguia o cursor e a onda do clique) e repintado a ~15 quadros por segundo, para não pesar.
  */
 import { useEffect, useRef } from 'react';
 
 const CELL = 12; // distância entre amostras do campo, em px
 const TERRAIN_SCALE = 360; // largura de um morro do terreno, em px
 const INDEX_EVERY = 5; // a cada 5 curvas, uma curva mestra mais forte
-const HILL_HEIGHT = 0.5;
-const HILL_SPREAD = 120;
-const HILL_FOLLOW = 9;
-const HILL_RISE = 5;
-const RIPPLE_MS = 1800;
-const RIPPLE_SPEED = 0.24;
-const RIPPLE_WIDTH = 42;
-const RIPPLE_HEIGHT = 0.2;
-const RIPPLE_WAVELENGTH = 96;
-const IDLE_FRAME_MS = 33;
-
-type Ripple = { x: number; y: number; start: number };
-type Hill = { x: number; y: number; targetX: number; targetY: number; amount: number; on: boolean };
+/** A deriva é lenta (6 px/s): ~15 quadros por segundo bastam. */
+const PAINT_MS = 66;
 
 /** Ruído de gradiente 3D com semente (improved noise de Ken Perlin), de -1 a 1. */
 function createNoise(seed: number) {
@@ -152,24 +141,15 @@ function traceContours(field: Float32Array, cols: number, rows: number, interval
   }
 }
 
-function stepHill(hill: Hill, dt: number) {
-  const follow = 1 - Math.exp(-HILL_FOLLOW * dt);
-  hill.x += (hill.targetX - hill.x) * follow;
-  hill.y += (hill.targetY - hill.y) * follow;
-  const goal = hill.on ? 1 : 0;
-  hill.amount += (goal - hill.amount) * (1 - Math.exp(-HILL_RISE * dt));
-  return Math.abs(hill.targetX - hill.x) > 0.5 || Math.abs(hill.targetY - hill.y) > 0.5 || Math.abs(goal - hill.amount) > 0.002;
-}
-
-type Props = { interval?: number; speed?: number; seed?: number; interactive?: boolean; className?: string };
+type Props = { interval?: number; speed?: number; seed?: number; className?: string };
 
 /** Camada de curvas de nível para o fundo de uma seção. A cor vem do CSS (`color` em `.topo`). */
-export function Topo({ interval = 0.07, speed = 1, seed = 26, interactive = true, className }: Props) {
+export function Topo({ interval = 0.07, speed = 1, seed = 26, className }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const host = canvas?.parentElement; // a seção: os eventos do cursor vêm dela
+    const host = canvas?.parentElement;
     const ctx = canvas?.getContext('2d');
     if (!canvas || !host || !ctx) return;
 
@@ -181,17 +161,14 @@ export function Topo({ interval = 0.07, speed = 1, seed = 26, interactive = true
     let rows = 0;
     let field = new Float32Array(0);
     let color = '';
-    const hill: Hill = { x: 0, y: 0, targetX: 0, targetY: 0, amount: 0, on: false };
-    const ripples: Ripple[] = [];
     let time = 0;
     let last = 0;
-    let lastPaint = 0;
-    let raf = 0;
+    let timer = 0;
     let visible = true;
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       width = rect.width;
       height = rect.height;
       canvas.width = Math.max(1, Math.round(width * dpr));
@@ -203,37 +180,22 @@ export function Topo({ interval = 0.07, speed = 1, seed = 26, interactive = true
       color = getComputedStyle(canvas).color;
     };
 
-    const sample = (now: number) => {
+    const sample = () => {
       const z = time * 0.05;
       const drift = time * 6;
-      const hillOn = hill.amount > 0.001;
-      const spread = 2 * HILL_SPREAD * HILL_SPREAD;
-      const ringWidth = 2 * RIPPLE_WIDTH * RIPPLE_WIDTH;
       for (let j = 0; j < rows; j++) {
         const y = j * CELL;
         for (let i = 0; i < cols; i++) {
           const x = i * CELL;
           const nx = (x + drift) / TERRAIN_SCALE;
           const ny = y / TERRAIN_SCALE;
-          let v = noise(nx, ny, z) * 0.78 + noise(nx * 2.3 + 17.1, ny * 2.3 + 4.7, z * 1.4) * 0.22;
-          if (hillOn) {
-            const dx = x - hill.x;
-            const dy = y - hill.y;
-            v += HILL_HEIGHT * hill.amount * Math.exp(-(dx * dx + dy * dy) / spread);
-          }
-          for (const r of ripples) {
-            const age = now - r.start;
-            const d = Math.hypot(x - r.x, y - r.y) - age * RIPPLE_SPEED;
-            const fadeOut = 1 - age / RIPPLE_MS;
-            v += RIPPLE_HEIGHT * fadeOut * fadeOut * Math.exp(-(d * d) / ringWidth) * Math.cos((d / RIPPLE_WAVELENGTH) * Math.PI * 2);
-          }
-          field[j * cols + i] = v;
+          field[j * cols + i] = noise(nx, ny, z) * 0.78 + noise(nx * 2.3 + 17.1, ny * 2.3 + 4.7, z * 1.4) * 0.22;
         }
       }
     };
 
-    const paint = (now: number) => {
-      sample(now);
+    const paint = () => {
+      sample();
       const minor = new Path2D();
       const major = new Path2D();
       traceContours(field, cols, rows, interval, minor, major);
@@ -249,37 +211,30 @@ export function Topo({ interval = 0.07, speed = 1, seed = 26, interactive = true
       ctx.globalAlpha = 1;
     };
 
-    const frame = (now: number) => {
-      raf = 0;
+    const step = () => {
+      timer = 0;
       if (!visible) return;
-      const dt = last ? Math.min((now - last) / 1000, 0.05) : 0;
+      const now = performance.now();
+      time += (last ? Math.min((now - last) / 1000, 0.25) : 0) * speed;
       last = now;
-      const hillMoving = stepHill(hill, dt);
-      while (ripples.length > 0 && now - ripples[0].start > RIPPLE_MS) ripples.shift();
-      const settling = hillMoving || ripples.length > 0;
-      time += dt * speed;
-      // só a deriva: meio quadro por quadro basta; o que segue a mão ganha todos os quadros
-      if (settling || now - lastPaint >= IDLE_FRAME_MS) {
-        paint(now);
-        lastPaint = now;
-      }
-      if (speed > 0 || settling) raf = requestAnimationFrame(frame);
+      paint();
+      timer = window.setTimeout(step, PAINT_MS);
     };
     const start = () => {
-      if (!raf && visible && !reduce) {
+      if (!timer && visible && !reduce && speed > 0) {
         last = 0;
-        raf = requestAnimationFrame(frame);
+        timer = window.setTimeout(step, PAINT_MS);
       }
     };
 
     resize();
-    paint(performance.now());
+    paint();
     canvas.classList.add('is-ready');
     start();
 
     const ro = new ResizeObserver(() => {
       resize();
-      paint(performance.now());
+      paint();
     });
     ro.observe(canvas);
     let onScreen = true;
@@ -294,49 +249,13 @@ export function Topo({ interval = 0.07, speed = 1, seed = 26, interactive = true
     io.observe(host);
     document.addEventListener('visibilitychange', updateVisible);
 
-    const local = (e: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
-    };
-    const onMove = (e: PointerEvent) => {
-      if (e.pointerType !== 'mouse') return; // toque não tem hover: um morro parado onde o dedo saiu fica estranho
-      const p = local(e);
-      if (!hill.on) {
-        hill.x = p.x;
-        hill.y = p.y;
-      }
-      hill.targetX = p.x;
-      hill.targetY = p.y;
-      hill.on = true;
-      start();
-    };
-    const onLeave = () => {
-      hill.on = false;
-      start();
-    };
-    const onDown = (e: PointerEvent) => {
-      if ((e.target as Element).closest('a, button, input, select, textarea, label')) return;
-      ripples.push({ ...local(e), start: performance.now() });
-      if (ripples.length > 4) ripples.shift();
-      start();
-    };
-    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    if (interactive && fine && !reduce) {
-      host.addEventListener('pointermove', onMove);
-      host.addEventListener('pointerleave', onLeave);
-      host.addEventListener('pointerdown', onDown);
-    }
-
     return () => {
-      cancelAnimationFrame(raf);
+      clearTimeout(timer);
       ro.disconnect();
       io.disconnect();
       document.removeEventListener('visibilitychange', updateVisible);
-      host.removeEventListener('pointermove', onMove);
-      host.removeEventListener('pointerleave', onLeave);
-      host.removeEventListener('pointerdown', onDown);
     };
-  }, [interval, speed, seed, interactive]);
+  }, [interval, speed, seed]);
 
   return <canvas ref={canvasRef} className={className ? `topo ${className}` : 'topo'} aria-hidden="true" />;
 }
